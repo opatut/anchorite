@@ -12,7 +12,8 @@ class ItemType(db.Model):
     name = db.Column(db.String(80))
     icon = db.Column(db.String(80))
     user_items = db.relationship("UserItem", backref="item_type", lazy="dynamic")
-    brew_actions = db.relationship("BrewAction", backref="item_type", lazy="dynamic")
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
+    #brew_actions = db.relationship("BrewAction", backref="item_type", lazy="dynamic")
     # ...
 
 class UserItem(db.Model):
@@ -39,7 +40,7 @@ class BrewAction(Action):
     __mapper_args__ = {
        "polymorphic_identity": "brew_action"
     }
-    
+
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def execute(self):
