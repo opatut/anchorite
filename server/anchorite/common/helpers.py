@@ -20,7 +20,7 @@ def init(seed=False):
         user_item_paul = UserItem()
         user_item_paul.user = user
         user_item_paul.item_type = item_type_pebble
-        user_item_paul.count = 10 
+        user_item_paul.count = 10
         db.session.add(user_item_paul)
 
         unit_type = UnitType()
@@ -28,7 +28,7 @@ def init(seed=False):
         db.session.add(unit_type)
 
         recipe = Recipe()
-        recipe.unit_type = unit_type
+        recipe.output = unit_type
         db.session.add(recipe)
 
         recipe_item = RecipeItem()

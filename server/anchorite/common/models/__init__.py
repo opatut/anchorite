@@ -18,7 +18,7 @@ class UserItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     item_type_id = db.Column(db.Integer, db.ForeignKey('item_type.id'))
-    count = db.Column(db.Integer)
+    count = db.Column(db.Integer, default=1)
 
 class Action(db.Model):
      id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +42,10 @@ class BrewAction(Action):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def execute(self):
-        pass
+        print(self)
+
+    def __repr__(self):
+        return "[Action] Brew: {}".format(repr(self.recipe))
 
 class CollectAction(Action):
     __mapper_args__ = {
@@ -58,11 +61,25 @@ class Recipe(db.Model):
     brew_actions = db.relationship("BrewAction", backref="recipe", lazy="dynamic")
     recipe_items = db.relationship("RecipeItem", backref="recipe", lazy="dynamic")
 
+    def __repr__(self):
+        first = True
+        out = "[Recipe] "
+        for item in self.recipe_items:
+            if first:
+               first = False
+               out += "{}x {}".format(item.count, item.item_type.name)
+            else:
+                out += "+ {}x {}".format(item.count, item.item_type.name)
+
+        out += " = {}".format(self.output.name)
+        return out
+
+
 class RecipeItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
     item_type_id = db.Column(db.Integer, db.ForeignKey('item_type.id'))
-    count = db.Column(db.Integer)
+    count = db.Column(db.Integer, default=1)
 
 class UnitType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
