@@ -30,8 +30,8 @@ module.exports = {
 				loader: "json"
 			},
 			{
-				test: /(^static|\.(woff2?|svg|eot|ttf)$)/,
-				loader: 'file'
+				test: /(^static|\.(woff2?|svg|eot|ttf|png)$)/,
+				loader: 'url?limit=10000'
 			},
 
 			// fontawesome
