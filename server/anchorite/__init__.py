@@ -8,13 +8,13 @@ app.config.from_pyfile("../config.py.example", silent=True)
 app.config.from_pyfile("../config.py", silent=True)
 
 manager = Manager(app)
-
 db = SQLAlchemy(app)
-
 login_manager = LoginManager(app)
-login_manager.login_view = "login"
 
 import anchorite.common.models
 import anchorite.api.routes
 import anchorite.daemon
 
+@login_manager.user_loader
+def load_user(user_id):
+    return models.User.get(user_id)

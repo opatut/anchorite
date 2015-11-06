@@ -1,11 +1,22 @@
 from anchorite import db
+from flask.ext.login import UserMixin
+from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    password = db.Column(db.String(80))
+    salt = db.Column(db.String(64))
+    password_hash= db.Column(db.String(64))
     actions = db.relationship("Action", backref="user", lazy="dynamic")
     items = db.relationship("UserItem", backref="user", lazy="dynamic")
+
+    def __init__(self, username, password):
+        self.name = username
+        self.salt = generate_random_salt()
+        self.password_hash = generate_password_hash(password, self.salt)
+
+    def check_password(self, password):
+        return check_password_hash(password, self.password_hash, self.salt)
 
 class ItemType(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -7,9 +7,7 @@ def init(seed=False):
     db.create_all()
 
     if seed:
-        user = User()
-        user.name = "paul"
-        user.password = "hunter2"
+        user = User("paul", "hunter2")
         db.session.add(user)
 
         item_type_pebble = ItemType()
