@@ -1,0 +1,5 @@
+
+# Do not use relative paths if using migrations!
+SQLALCHEMY_ECHO = False
+SQLALCHEMY_DATABASE_URI = "sqlite:///../../anchorite.db"
+QLALCHEMY_TRACK_MODIFICATIONS = True
