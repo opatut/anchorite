@@ -1,5 +1,9 @@
-from anchorite import manager
+from anchorite import manager, db
+from anchorite.common.models import User
 
 @manager.command
 def daemon():
-    print("Running daemon (not actually)")
+    #while True:
+    print(User.query.all())
+
+
