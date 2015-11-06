@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AnchoRite</title>
+    {% if config['WEBPACK_SERVER'] %}
+        <link type="text/javascript" href="{{ config['WEBPACK_SERVER'] }}static/bundle.css" />
+    {% else %}
+        <link type="text/javascript" href="{{ url_for('static', filename='bundle.css') }}" />
+    {% endif %}
+</head>
+<body>
+    <div id="container"></div>
+    {% if config['WEBPACK_SERVER'] %}
+        <script type="text/javascript" src="{{ config['WEBPACK_SERVER'] }}static/bundle.js"></script>
+    {% else %}
+        <script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
+    {% endif %}
+</body>
+</html>
