@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AnchoRite</title>
-</head>
-<body>
-    <form method="post">
-        <input type="text" name="username" value="" placeholder="Username">
-        <input type="password" name="password" value="" placeholder="Password">
-        <input type="submit" value="Submit">
+{% extends "_base.html" %}
+
+{% block content %}
+    <form method="post" class="login-form">
+        <h2>{{ 'Register' if register else 'Log in' }}</h2>
+        <input type="text" name="username" value="" placeholder="Username" />
+        <input type="password" name="password" value="" placeholder="Password" />
+        <input type="submit" value="{{ 'Register' if register else 'Log in' }}" />
+        {% if register %}
+            <a href="/login">Already have an account? Log in.</a>
+        {% else %}
+            <a href="/register">No account yet? Register.</a>
+        {% endif %}
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,9 +1,10 @@
-from anchorite import app, db
+from anchorite import app, db, login_manager
 from flask import render_template, json, request, redirect, url_for
-from flask.ext.login import login_user, logout_user, current_user
+from flask.ext.login import login_user, logout_user, current_user, login_required
 from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType
 
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
@@ -24,35 +25,36 @@ def login():
         else:
             print("Error wrong password or username")
 
-    return render_template('login.html')
+    return render_template('login.html', register=False)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        print(username)
-        print(password)
 
         user = User(username, password)
         db.session.add(user)
         db.session.commit()
 
-    return render_template('login.html')
+    return render_template('login.html', register=True)
 
 @app.route('/logout')
 def logout():
     if current_user.is_authenticated:
-         logout_user()
+        logout_user()
 
     return redirect(url_for('index'))
 
 @app.route('/game_state')
+@login_required
 def game_state():
     state = {
-        
+
     }
     return json.dumps(state)
 
