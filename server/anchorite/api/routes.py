@@ -58,9 +58,10 @@ def game_state():
         "tick" : 123,
         "inventory" : list(map(UserItem.to_json, current_user.items)),
         "units" : list(map(UserUnit.to_json, current_user.units)),
+        "actions" : [action.to_json() for action in current_user.actions]
 
     }
-    
+
     return json.dumps(state)
 
 @app.route('/types')

@@ -55,6 +55,13 @@ class Action(db.Model):
 
      def execute(self):
          pass
+     def to_json(self):
+        return dict(id=self.id,
+            type=self.type,
+            user_id=self.user_id,
+            tick=self.tick,
+            )
+
 
 class BrewAction(Action):
     __mapper_args__ = {
@@ -62,7 +69,10 @@ class BrewAction(Action):
     }
 
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
-
+    def to_json(self):
+        d = Action.to_json(self)
+        d["recipe_id"] = self.recipe_id
+        return d
     def execute(self):
         unit = UserUnit(unit_type=self.recipe.output)
         self.user.units.append(unit)
