@@ -45,9 +45,14 @@ body {
     image-rendering: pixelated;
 }
 
+.sprite {
+    -webkit-filter: brightness(0.7);
+}
+
 @import './login';
 
 @import './components/hover-button';
+@import './components/progress-icon';
 @import './components/item';
 @import './components/shelf';
 @import './components/stage';

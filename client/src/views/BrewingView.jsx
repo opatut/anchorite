@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Sprite, Cauldron, Shelf, Stage} from '../components';
+import {Queue, Sprite, Cauldron, Shelf, Stage} from '../components';
 import {Inventory, find} from '../data';
 
 import * as unitSprites from '../resources/units';
@@ -15,6 +15,7 @@ export default class BrewingView extends React.Component {
 			stage,
 			inventory,
 			units,
+			actions,
 		} = this.props;
 
 		const arr = inventory.toArray();
@@ -25,8 +26,8 @@ export default class BrewingView extends React.Component {
 			<div className="units">
 				{ units && units.map((unit) => {
 					const unitType = find(this.context.types.unit_types, unit.unit_type_id);
-					console.log(unitType);
-					return <Sprite frames={unitSprites[unitType.image]} key={unit.id} />;
+					const sprite = unitSprites[unitType.image];
+					return <Sprite {...sprite} key={unit.id} displayHeight={12} displayUnit='vw' />;
 				})}
 
 			</div>
@@ -37,6 +38,8 @@ export default class BrewingView extends React.Component {
 			<Cauldron />
 
 			<Stage items={stage} />
+
+			<Queue actions={actions} />
 		</div>;
 	}
 }
