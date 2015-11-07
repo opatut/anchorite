@@ -4,28 +4,37 @@ from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction
 
 items = [
     # icon       name
-    ("pebble", "Pebble"),
-    ("branch", "Branch"),
-    ("bunch_of_gras", "Bunch of gras"),
+    ("branch", "branch"),
+    ("bunch_of_gras", "gras"),
     ("frog_leg", "frog leg"),
-    ("green_muscus", "green muscus"),
     ("pine_cone", "pine cone"),
-    ("rumex_alpinus", "Rumex Alpinus"),
-    ("pigweed", "Pigweed"),
-    ("fly_agaric", "Fly agaric"),
-    ("yallow", "Yallow"),
-    ("death_cap", "Death cap"),
-    ("sickener", "Sickener"),
-    ("destroying_angel", "Destroying angel"),
+    ("rumex_alpinus", "rumex_alpinus"),
+    ("pigweed", "pigweed"),
+    ("yarrow", "yarrow"),
+    ("death_cap", "death_cap"),
+    ("sickener", "sickener"),
+    ("destroying_angel", "destroying_angel"),
+    ("wild_strawberry", "wild_strawberry"),
+    ("star", "star"),
 ]
 
 units = [
     # image       name
     ("forestmonster", "Forest Monster"),
-    ("blubb", "Blubb"),
     ("pib", "Pib"),
 ]
 
+recipes = [
+    #rec.name      rec.outcome    rec.ingreds  rec.duration
+
+    ("brown", "forestmonster", ("branch", "sickener", "gras", 30),
+    ("red", "red_monster", ("branch", "sickener", "gras", "wild_strawberry"), 50)
+    ("blue", "blue_monster", ("branch", "sickener", "pigweed", "gras"), 60)
+    ("blue", "blue_monster", ("branch", "sickener", "yarrow", "gras"), 60)
+    ("blue", "blue_monster", ("branch", "sickener", "rumex_alpinus", "gras"), 60)
+    ("purple", "purple_monster", ("branch", "death_cap", "pine_cone", "frog_leg"), 70)
+    ("gold", "gold_monster", ("branch", "destroying_angel", "star", "death_cap", "pine_cone"),120h)
+]
 
 @manager.command
 def init(seed=False):
@@ -61,20 +70,19 @@ def init(seed=False):
             db.session.add(unit_type)
             unit_types[image] = unit_type
 
-        recipe = Recipe()
-        recipe.output = unit_types["forestmonster"]
-        db.session.add(recipe)
 
-        recipe_item = RecipeItem()
-        recipe_item.recipe = recipe
-        recipe_item.item_type = item_types["pebble"]
-        recipe_item.count = 1
-        db.session.add(recipe_item)
+        for name, outcome, items, duration in recipes:
+            recipe = Recipe()
+            recipe.name = name
+            recipe.unit_type = unit_types[outcome]
+            recipe.duration = duration
+            db.session.add(recipe)
 
-        action = BrewAction()
-        action.recipe = recipe
-        action.user = user
-        action.tick = 0
-        db.session.add(action)
+            for item in items:
+                recipe_item = RecipeItem()
+                recipe_item.recipe = recipe
+                recipe_item.item_type = item_types[item]
+                db.session.add(recipe_item)
+
 
     db.session.commit()
