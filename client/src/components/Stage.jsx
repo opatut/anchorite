@@ -27,9 +27,9 @@ export default class Stage extends React.Component {
 
 		return <div className='stage'>
 			<div className="items">
-				{items && items.map(({item_type_id, count}, i) => {
+				{items && items.map(({item_type_id, count}) => {
 					const itemType = find(this.context.types.item_types, item_type_id);
-					return <HoverButton color='red' icon='&ndash;' onClick={onClick(item_type_id)} key={`${item_type_id}-${i}-${count}`}>
+					return <HoverButton color='red' icon='&ndash;' onClick={onClick(item_type_id)} key={item_type_id}>
 						<Item itemType={itemType} count={count} />
 					</HoverButton>;
 				})}

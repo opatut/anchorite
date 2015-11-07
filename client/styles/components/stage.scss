@@ -1,9 +1,10 @@
 .stage {
     text-align: center;
-    height: 6vw;
+    height: 7vw;
 
     .items {
         display: flex;
+        justify-content: center;
 
         > * {
             margin-right: 1vw;

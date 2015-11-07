@@ -30,17 +30,8 @@ module.exports = {
 				loader: "json"
 			},
 			{
-				test: /(^static|\.(woff2?|svg|eot|ttf|png)$)/,
-				loader: 'url?limit=10000'
-			},
-
-			// fontawesome
-			{
-				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: "url?limit=10000&minetype=application/font-woff"
-			},
-			{   test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: "file"
+				test: /\.(woff2?|svg|eot|ttf|png)$/,
+				loader: 'file'
 			},
 		],
 	},
