@@ -4,19 +4,15 @@
     display: inline-block;
     position: relative;
     display: flex;
-    color: yellow;
 
-    box-shadow: 0 0 3px currentColor;
-    outline: 1px solid currentColor;
-
-    background: url('../src/resources/frame.png') 100% 100%;
+    background: url('../src/resources/frame.png');
+    background-size: 100%;
 
     img {
         width: 100%;
         height: 100%;
         display: block;
         margin: 0;
-        background: white;
         outline: 0;
     }
 
