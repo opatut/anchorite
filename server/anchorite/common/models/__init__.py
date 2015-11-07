@@ -86,9 +86,7 @@ class BrewAction(Action):
         return d
 
     def execute(self):
-        unit_type = self.recipe.output
-        print(unit_type)
-        unit = UserUnit(unit_type=unit_type)
+        unit = UserUnit(unit_type=self.recipe.output)
         self.user.units.append(unit)
 
     def __repr__(self):
@@ -125,7 +123,8 @@ class Recipe(db.Model):
     def to_json(self):
         return dict(id=self.id,
             unit_type_id=self.unit_type_id,
-            recipe_items=list(map(RecipeItem.to_json, self.recipe_items)))
+            recipe_items=list(map(RecipeItem.to_json, self.recipe_items))
+            duration=self.duration)
 
 
 class RecipeItem(db.Model):
