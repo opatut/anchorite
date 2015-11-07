@@ -87,6 +87,6 @@ def action_brew():
 @login_required
 def action_collect():
     gamestate = GameState.query.get(0)
-    current_user.actions.append(CollectAction(tick=gamestate.tick + 60))
+    current_user.actions.append(CollectAction(start=gamestate.tick, end=gamestate.tick + 60))
     db.session.commit()
     return game_state()
