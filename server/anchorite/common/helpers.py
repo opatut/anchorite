@@ -63,6 +63,7 @@ def init(seed=False):
 
         recipe = Recipe()
         recipe.output = unit_types["forestmonster"]
+        recipe.duration = 15
         db.session.add(recipe)
 
         recipe_item = RecipeItem()
