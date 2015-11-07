@@ -26,7 +26,7 @@ class ItemType(db.Model):
     recipe_items = db.relationship("RecipeItem", backref="item_type", lazy="dynamic")
 
     def to_json(self):
-        return dict(name=self.name, icon=self.icon)
+        return dict(id=self.id, name=self.name, icon=self.icon)
 
 
 class UserItem(db.Model):
@@ -90,7 +90,8 @@ class Recipe(db.Model):
         return out
 
     def to_json(self):
-        return dict(unit_type_id=self.unit_type_id,
+        return dict(id=self.id,
+            unit_type_id=self.unit_type_id,
             recipe_items=list(map(RecipeItem.to_json, self.recipe_items)))
 
 
@@ -107,5 +108,8 @@ class RecipeItem(db.Model):
 
 class UnitType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    recipe = db.relationship("Recipe", backref="output", lazy="dynamic")
+    recipes = db.relationship("Recipe", backref="output", lazy="dynamic")
     name = db.Column(db.String(80))
+
+    def to_json(self):
+        return dict(id=self.id, name=self.name)
