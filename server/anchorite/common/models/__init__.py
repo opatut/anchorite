@@ -171,4 +171,6 @@ class UserUnit(db.Model):
     def to_json(self):
         return dict(id=self.id,
             user_id=self.user_id,
-            unit_type_id=self.unit_type_id)
+            unit_type_id=self.unit_type_id,
+            happyness=self.happyness,
+            health=self.health)
