@@ -156,9 +156,19 @@ class UserUnit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     unit_type_id = db.Column(db.Integer, db.ForeignKey('unit_type.id'))
-    count = db.Column(db.Integer, default=1)
+    happyness = db.Column(db.Integer)
+    health = db.Column(db.Integer)
+
+    def kill(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def apply_damage(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.kill()
+
     def to_json(self):
         return dict(id=self.id,
             user_id=self.user_id,
-            unit_type_id=self.unit_type_id,
-            count =self.count)
+            unit_type_id=self.unit_type_id)
