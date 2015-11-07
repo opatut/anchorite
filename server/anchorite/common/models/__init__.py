@@ -16,6 +16,16 @@ class User(db.Model, UserMixin):
         self.salt = generate_random_salt()
         self.password_hash = generate_password_hash(password, self.salt)
 
+    def remove_item(self, item_type_id, count=1):
+        item_remove = self.items.filter(UserItem.item_type_id == item_type_id).first()
+        item_remove.count -= 1
+        if item_remove.count <= 0:
+            db.session.delete(item_remove)
+            db.session.commit()
+
+
+
+
     def check_password(self, password):
         return check_password_hash(password, self.password_hash, self.salt)
 
@@ -92,6 +102,7 @@ class Recipe(db.Model):
     unit_type_id = db.Column(db.Integer, db.ForeignKey('unit_type.id'))
     brew_actions = db.relationship("BrewAction", backref="recipe", lazy="dynamic")
     recipe_items = db.relationship("RecipeItem", backref="recipe", lazy="dynamic")
+    duration = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         first = True
@@ -110,7 +121,7 @@ class Recipe(db.Model):
         return dict(id=self.id,
             unit_type_id=self.unit_type_id,
             recipe_items=list(map(RecipeItem.to_json, self.recipe_items)))
-
+            
 
 class RecipeItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)

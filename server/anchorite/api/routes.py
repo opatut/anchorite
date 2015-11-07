@@ -1,7 +1,7 @@
 from anchorite import app, db, login_manager
 from flask import render_template, json, request, redirect, url_for
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit
+from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit, GameState
 
 @app.route('/')
 @login_required
@@ -70,3 +70,16 @@ def types():
     recipes = list(map(Recipe.to_json, Recipe.query.all()))
     unit_types = list(map (UnitType.to_json, UnitType.query.all()))
     return json.dumps(dict(item_types=item_types, recipes=recipes, unit_types=unit_types))
+
+@app.route('/action_brew', methods=['GET', 'POST'])
+@login_required
+def action_brew():
+    recipe = Recipe.query.get(request.form['recipe_id'])
+    items = recipe.recipe_items
+    gamestate = GameState.query.get(0)
+    for item in items:
+        current_user.remove_item(item.item_type_id)
+
+    current_user.actions.append(BrewAction(recipe=recipe, tick=gamestate.tick + recipe.duration))
+    db.session.commit()
+    return game_state()
