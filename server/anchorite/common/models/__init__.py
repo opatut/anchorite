@@ -1,3 +1,4 @@
+import random
 from anchorite import db
 from flask.ext.login import UserMixin, current_user
 from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
@@ -116,7 +117,10 @@ class CollectAction(Action):
     }
 
     def execute(self):
-        pass
+        items = ItemType.query.all()
+        for i in range(random.randint(0, 10)):
+            self.user.items.append(UserItem(item_type=random.choice(items)))
+
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
