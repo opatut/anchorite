@@ -8,7 +8,7 @@ def daemon():
     game_state = GameState.query.get(0)
     while True:
         game_state.tick += 1
-        for action in Action.query.filter(Action.tick <= game_state.tick).all():
+        for action in Action.query.filter(Action.end <= game_state.tick).all():
             action.execute()
             db.session.delete(action)
         db.session.commit()

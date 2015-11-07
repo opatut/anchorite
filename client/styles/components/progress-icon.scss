@@ -2,6 +2,11 @@
     position: relative;
     display: inline-block;
 
+    &.round {
+        border-radius: 100%;
+        overflow: hidden;
+    }
+
     > .overlay {
         position: absolute;
         left: 0;
