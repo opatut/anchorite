@@ -79,7 +79,7 @@ def action_brew():
     for item in items:
         current_user.remove_item(item.item_type_id)
 
-    current_user.actions.append(BrewAction(recipe=recipe, tick=gamestate.tick + recipe.duration))
+    current_user.actions.append(BrewAction(recipe=recipe,start=gamestate.tick, end=gamestate.tick + recipe.duration))
     db.session.commit()
     return game_state()
 

@@ -100,7 +100,7 @@ class CollectAction(Action):
     }
 
     def execute(self):
-
+        pass
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
