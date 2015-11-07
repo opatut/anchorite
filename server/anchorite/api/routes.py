@@ -1,4 +1,5 @@
 from anchorite import app
+from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType
 
 from flask import render_template, json
 
@@ -15,3 +16,9 @@ def game_state():
     }
     return json.dumps(state)
 
+@app.route('/types')
+def types():
+    item_types = list(map(ItemType.to_json, ItemType.query.all()))
+    recipes = list(map(Recipe.to_json, Recipe.query.all()))
+    
+    return json.dumps(dict(item_types=item_types, recipes=recipes))
