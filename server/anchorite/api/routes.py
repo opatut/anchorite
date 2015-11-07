@@ -1,5 +1,5 @@
 from anchorite import app, db, login_manager
-from flask import render_template, json, request, redirect, url_for, abort
+from flask import render_template, request, redirect, url_for, abort, jsonify
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit, GameState, AttackAction
 
@@ -61,7 +61,7 @@ def game_state():
         "actions": [action.to_json() for action in current_user.actions],
     }
 
-    return json.dumps(state)
+    return jsonify(state)
 
 @app.route('/types')
 @login_required
@@ -70,7 +70,7 @@ def types():
     recipes = list(map(Recipe.to_json, Recipe.query.all()))
     unit_types = list(map(UnitType.to_json, UnitType.query.all()))
     friends = [friend.to_json() for friend in current_user.friends]
-    return json.dumps(dict(item_types=item_types, recipes=recipes, unit_types=unit_types, friends=friends))
+    return jsonify(dict(item_types=item_types, recipes=recipes, unit_types=unit_types, friends=friends))
 
 @app.route('/action/brew', methods=['GET', 'POST'])
 @login_required
