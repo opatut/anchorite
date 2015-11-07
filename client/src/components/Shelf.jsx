@@ -28,7 +28,7 @@ export default class Shelf extends React.Component {
 		return <div className={classnames('shelf', className)}>
 			{inventory.map(({item_type_id, count}, i) => {
 				const itemType = find(this.context.types.item_types, item_type_id);
-				return <HoverButton color='green' icon='+' onClick={onClick(item_type_id)} key={item_type_id}>
+				return <HoverButton color='green' icon='+' onClick={onClick(item_type_id)} key={item_type_id} title={itemType.name}>
 					<Item itemType={itemType} count={count} />
 				</HoverButton>;
 			})}

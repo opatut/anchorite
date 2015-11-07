@@ -52,7 +52,7 @@ export default class Sprite extends React.Component {
 	}
 
 	render() {
-		const {width, height, sprite, frames, className, displayUnit} = this.props;
+		const {width, height, sprite, frames, className, displayUnit, displayWidth: _1, displayHeight: _2, ...props} = this.props;
 		let {displayWidth, displayHeight} = this.props;
 		const count = this.props.count || frames.length;
 
@@ -82,6 +82,6 @@ export default class Sprite extends React.Component {
 			width: '100%',
 		};
 
-		return <div className={classnames('sprite', className)} style={style}><div style={spacerStyle} /></div>;
+		return <div className={classnames('sprite', className)} style={style} {...props}><div style={spacerStyle} /></div>;
 	}
 }

@@ -29,15 +29,15 @@ export default class Stage extends React.Component {
 			<div className="items">
 				{items && items.map(({item_type_id, count}) => {
 					const itemType = find(this.context.types.item_types, item_type_id);
-					return <HoverButton color='red' icon='&ndash;' onClick={onClick(item_type_id)} key={item_type_id}>
+					return <HoverButton color='red' icon='&ndash;' onClick={onClick(item_type_id)} key={item_type_id} title={itemType.name}>
 						<Item itemType={itemType} count={count} />
 					</HoverButton>;
 				})}
 			</div>
 			{items && items.toArray().length > 0 && (
 				<div className="stage-button">
-					<button onClick={() => dispatch({ type: 'stage.confirm' })}>Mix it!</button>
-					<button onClick={() => dispatch({ type: 'stage.clear' })}>Nah, nevermind!</button>
+					<button className="button" onClick={() => dispatch({ type: 'stage.clear' })}>Forget about that!</button>
+					<button className="button" onClick={() => dispatch({ type: 'stage.confirm' })}>Brew</button>
 				</div>
 			)}
 		</div>;

@@ -29,7 +29,7 @@ export default class BrewingView extends React.Component {
 			<div className="units">
 				{ units && units.map((unit) => {
 					const unitType = find(this.context.types.unit_types, unit.unit_type_id);
-					const sprite = unitSprites["forestmonster"];
+					const sprite = unitSprites[unitType.image];
 					return <Sprite {...sprite} key={unit.id} displayHeight={12} displayUnit='vw' />;
 				})}
 
@@ -39,9 +39,9 @@ export default class BrewingView extends React.Component {
 			<Shelf inventory={inventoryRight} className="right" />
 
 			<div className="center">
-				<button>Attack</button>
+				<button className="button">Attack</button>
 				<Cauldron />
-				<button onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
+				<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
 			</div>
 
 			<Stage items={stage} />

@@ -34,10 +34,6 @@
         display: flex;
         align-items: center;
 
-        > button {
-            width: 120px;
-            height: 40px;
-        }
     }
 
     > .units {
@@ -58,5 +54,27 @@
         left: 50%;
         bottom: 20%;
         transform: translate(-50%, 0%);
+    }
+}
+
+.button {
+    width: 12vw;
+    height: 4vw;
+    background: url('../src/resources/button.png');
+    background-size: 100%;
+    color: white;
+    font-family: inherit;
+    font-size: 1.3vw;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin: 0.2vw;
+
+    &:hover {
+        -webkit-filter: brightness(1.1);
+    }
+
+    &:active {
+        -webkit-filter: brightness(1.2);
     }
 }
