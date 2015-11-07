@@ -26,7 +26,7 @@ export default class BrewingView extends React.Component {
 			<div className="units">
 				{ units && units.map((unit) => {
 					const unitType = find(this.context.types.unit_types, unit.unit_type_id);
-					const sprite = unitSprites[unitType.image];
+					const sprite = unitSprites["forestmonster"];
 					return <Sprite {...sprite} key={unit.id} displayHeight={12} displayUnit='vw' />;
 				})}
 

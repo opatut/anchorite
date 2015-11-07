@@ -87,6 +87,6 @@ def action_brew():
 @app.route('/action_collect', methods=['GET', 'POST'])
 @login_required
 def action_collect():
-    current_user.queue_action(CollectAction(), 30)
+    current_user.queue_action(CollectAction(), 5)
     db.session.commit()
     return game_state()

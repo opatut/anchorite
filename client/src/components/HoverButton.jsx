@@ -9,8 +9,8 @@ export default class HoverButton extends React.Component {
 
 		return <div className={className}>
 			{children}
-			<div className="overlay">
-				<button {...{onClick}}>{icon}</button>
+			<div className="overlay" {...{onClick}}>
+				<button>{icon}</button>
 			</div>
 		</div>;
 	}
