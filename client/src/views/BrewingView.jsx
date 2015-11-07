@@ -35,18 +35,22 @@ export default class BrewingView extends React.Component {
 
 			</div>
 
+			<Stage items={stage} />
+
 			<Shelf inventory={inventoryLeft} className="left" />
 			<Shelf inventory={inventoryRight} className="right" />
 
 			<div className="center">
-				<button className="button">Attack</button>
 				<Cauldron />
-				<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
 			</div>
 
-			<Stage items={stage} />
-
 			<Queue actions={actions} />
+
+			<div className="buttons">
+				<button className="button" onClick={() => dispatch({ type: 'friends.toggle' })}>Friends</button>
+				<button className="button" onClick={() => dispatch({ type: 'attacks.toggle' })}>Battlefield</button>
+				<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
+			</div>
 		</div>;
 	}
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {BrewingView} from './views';
+import {Modal} from './components';
+import {FriendsView, BrewingView} from './views';
 import * as api from './api';
 import {Inventory} from './data';
 import {find} from 'lodash';
@@ -17,6 +18,7 @@ export default class App extends React.Component {
 			stage: new Inventory(),
 			inventory: new Inventory(),
 			tick: 0,
+			friendsOpen: false,
 		};
 	}
 
@@ -54,40 +56,43 @@ export default class App extends React.Component {
 	}
 
 	async dispatch(action) {
-		switch (action.type) {
-			case 'stage.confirm':
-				::this.confirmStage();
-				break;
+		const {type} = action;
 
-			case 'stage.clear':
-				this.setState({
-					stage: new Inventory()
-				});
-				break;
-
-			case 'stage.add':
-				this.setState({
-					stage: this.state.stage.add(new Inventory({[action.item_type_id]: action.count}))
-				});
-				break;
-
-			case 'stage.remove':
-				this.setState({
-					stage: this.state.stage.subtract(new Inventory({[action.item_type_id]: action.count}))
-				});
-				break;
-
-			case 'collect':
-				await api.postCollectAction();
-				::this.updateGameState();
-
-			case 'reload':
-				::this.updateGameState();
-				break;
-
-			default:
-				console.warn(`Unhandled action type: ${action.type}`);
+		if (type === 'stage.confirm') {
+			await this::this.confirmStage();
+		} else if (type === 'stage.clear') {
+			this.setState({
+				stage: new Inventory()
+			});
+		} else if (type === 'stage.add') {
+			this.setState({
+				stage: this.state.stage.add(new Inventory({[action.item_type_id]: action.count}))
+			});
+		} else if (type === 'stage.remove') {
+			this.setState({
+				stage: this.state.stage.subtract(new Inventory({[action.item_type_id]: action.count}))
+			});
+		} else if (type === 'collect') {
+			await api.postCollectAction();
+			await this::this.updateGameState();
+		} else if (type === 'reload') {
+			await this::this.updateGameState();
+		} else if (type === 'reload.full') {
+			await Promise.all([
+				this::this.updateGameState(),
+				this::this.updateTypes(),
+			]);
+		} else if (type === 'friends.toggle') {
+			await this::this.toggleFriendsOverlay();
+		} else if (type === 'friends.add') {
+			await this::this.addFriend(action.username);
+		} else {
+			console.warn(`Unhandled action type: ${type}`);
 		}
+	}
+
+	async addFriend(username) {
+		await api.postAddFriend(username);
 	}
 
 	async confirmStage() {
@@ -158,19 +163,24 @@ export default class App extends React.Component {
 		this.forceUpdate();
 	}
 
-	/*
-	 * Stage management
-	 */
+	toggleFriendsOverlay() {
+		this.setState({ friendsOpen: !this.state.friendsOpen });
+	}
 
 	render() {
 		if (!this.types || !this.state.gameState) {
 			return <div>Loading...</div>;
 		}
 
-		const {stage, inventory, gameState} = this.state;
+		const {stage, inventory, gameState, friendsOpen} = this.state;
 
 		return <div className="app">
 			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={gameState.actions} />
+
+			<Modal open={friendsOpen} onToggle={::this.toggleFriendsOverlay}>
+				<FriendsView />
+			</Modal>
+
 			<div className="account">
 				<a href="/logout">Logout</a>
 			</div>

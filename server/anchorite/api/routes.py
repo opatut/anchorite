@@ -131,3 +131,20 @@ def action_attack():
 
     db.session.commit()
     return game_state()
+
+@app.route('/add_friend', methods=['POST'])
+@login_required
+def add_friend():
+    username = request.form['username']
+    user = User.query.filter_by(name=username).first_or_404()
+
+    if current_user == user:
+        abort(404)
+
+    if user in current_user.friends:
+        return jsonify(ok=True)
+
+    current_user.friends.append(user)
+    db.session.commit()
+    return jsonify(ok=True)
+

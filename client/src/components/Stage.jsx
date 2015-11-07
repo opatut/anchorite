@@ -35,8 +35,8 @@ export default class Stage extends React.Component {
 				})}
 			</div>
 			{items && items.toArray().length > 0 && (
-				<div className="stage-button">
-					<button className="button" onClick={() => dispatch({ type: 'stage.clear' })}>Forget about that!</button>
+				<div className="stage-buttons">
+					<button className="button" onClick={() => dispatch({ type: 'stage.clear' })}>Put back</button>
 					<button className="button" onClick={() => dispatch({ type: 'stage.confirm' })}>Brew</button>
 				</div>
 			)}

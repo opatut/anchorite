@@ -4,10 +4,10 @@
 
     > .stage {
         position: absolute;
+        top: 1vw;
         left: 50%;
-        top: 10%;
-        width: 80%;
-        transform: translate(-50%, -50%);
+        width: 35%;
+        transform: translateX(-50%);
     }
 
     > .shelf {
@@ -15,34 +15,33 @@
 
         &.left {
             left: 20%;
-            top: 80%;
-            transform: translate(-50%, -100%);
+            top: 40%;
+            transform: translate(-50%, -50%);
         }
 
         &.right {
             right: 20%;
-            top: 80%;
-            transform: translate(50%, -100%);
+            top: 40%;
+            transform: translate(50%, -50%);
         }
     }
 
     > .center {
         position: absolute;
         left: 50%;
-        top: 70%;
-        transform: translate(-50%, -100%);
+        top: 55%;
+        transform: translate(-50%, -50%);
         display: flex;
         align-items: center;
-
     }
 
     > .units {
         position: absolute;
         left: 50%;
-        top: 55%;
+        top: 35%;
         width: 80%;
         height: 15vw;
-        transform: translate(-50%, -100%);
+        transform: translate(-50%, -50%);
 
         display: flex;
         align-items: center;
@@ -55,26 +54,38 @@
         bottom: 20%;
         transform: translate(-50%, 0%);
     }
-}
 
-.button {
-    width: 12vw;
-    height: 4vw;
-    background: url('../src/resources/button.png');
-    background-size: 100%;
-    color: white;
-    font-family: inherit;
-    font-size: 1.3vw;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    margin: 0.2vw;
+    > .buttons {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 1vw;
+        text-align: center;
 
-    &:hover {
-        -webkit-filter: brightness(1.1);
+        > * {
+            margin: 1vw;
+        }
     }
 
-    &:active {
-        -webkit-filter: brightness(1.2);
+    @media screen and (max-width: 500px) {
+        > .units {
+            top: 25%;
+        }
+
+        > .center {
+            top: 40%;
+            transform: translate(-50%, -50%) scale(2);
+        }
+
+        > .shelf.left {
+            left: 25%;
+            top: 70%;
+        }
+
+        > .shelf.right {
+            right: 25%;
+            top: 70%;
+        }
     }
 }

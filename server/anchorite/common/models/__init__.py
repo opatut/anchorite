@@ -62,7 +62,7 @@ class CollectAction(Action):
     def execute(self):
         items = ItemType.query.all()
         for i in range(random.randint(0, 10)):
-            self.user.add_item(UserItem(item_type=random.choice(items)))
+            self.user.add_item(random.choice(items).id)
 
 class AttackAction(Action):
     id = db.Column(db.Integer, db.ForeignKey('action.id'), primary_key=True)
@@ -136,7 +136,7 @@ class GameState(db.Model):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
+    name = db.Column(db.String(80), unique=True)
     salt = db.Column(db.String(100))
     password_hash= db.Column(db.String(100))
 
@@ -144,7 +144,13 @@ class User(db.Model, UserMixin):
     items = db.relationship("UserItem", backref="user", lazy="dynamic")
     units = db.relationship("UserUnit", backref="user", lazy="dynamic")
     incoming_attacks = db.relationship("AttackAction", backref="target_user", lazy="dynamic", foreign_keys=[AttackAction.target_user_id])
-    friends = db.relationship("User", secondary=friends, backref="friended", remote_side=[friends.columns.friend_id], foreign_keys=[friends.columns.user_id])
+
+    friends = db.relationship("User",
+        backref="friended",
+        lazy="dynamic",
+        secondary="friends",
+        primaryjoin=(id == friends.c.user_id),
+        secondaryjoin=(id == friends.c.friend_id))
 
     def __init__(self, username, password):
         self.name = username

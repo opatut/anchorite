@@ -1,13 +1,27 @@
 .stage {
     text-align: center;
-    height: 7vw;
 
     .items {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
 
         > * {
-            margin-right: 1vw;
+            margin: 0.5vw;
+        }
+    }
+
+    .stage-buttons {
+        .button {
+            margin: 1vw;
+
+            &:nth-child(1) {
+                -webkit-filter: sepia(100%) hue-rotate(-30deg) saturate(1.5);
+            }
+
+            &:nth-child(2) {
+                -webkit-filter: sepia(100%) hue-rotate(70deg) saturate(1.5);
+            }
         }
     }
 }

@@ -59,7 +59,8 @@ def init(seed=False):
             db.session.add(user)
 
         for name, _, friends in USERS:
-            users[name].friends = [users[friend] for friend in friends]
+            for friend in friends:
+                users[name].friends.append(users[friend])
 
         item_types = {}
         for icon,name in ITEMS:

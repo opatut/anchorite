@@ -4,14 +4,9 @@
     background: url('../src/resources/shelf.png');
     background-size: 100%;
 
-    -webkit-filter: brightness(0.4);
     transition: -webkit-filter 0.2s;
 
     display: block;
-
-    &:hover {
-        -webkit-filter: brightness(0.9);
-    }
 
     > * {
         position: absolute;
@@ -31,5 +26,10 @@
         &:nth-child(10) { left: 20%; top: 76%; }
         &:nth-child(11) { left: 40%; top: 76%; }
         &:nth-child(12) { left: 60%; top: 76%; }
+    }
+
+    @media screen and (max-width: 500px) {
+        width: 50vw;
+        height: 75vw;
     }
 }

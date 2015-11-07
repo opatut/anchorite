@@ -57,3 +57,7 @@ export async function postAttackAction(targetUserId, unitIds) {
 		unit_ids: unitIds.join(',')
 	});
 };
+
+export async function postAddFriend(username) {
+	return await post('/add_friend', {username});
+};
