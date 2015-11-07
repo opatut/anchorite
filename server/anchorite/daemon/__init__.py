@@ -10,6 +10,7 @@ def daemon():
         game_state.tick += 1
         for action in Action.query.filter(Action.tick <= game_state.tick).all():
             action.execute()
+            db.session.delete(action)
         db.session.commit()
         print(game_state.tick)
         time.sleep(1.0 - ((time.time() - start_time) % 1.0))

@@ -74,7 +74,7 @@ def types():
 @app.route('/action_brew', methods=['GET', 'POST'])
 @login_required
 def action_brew():
-    recipe = Recipe.query.get(request.form['recipe_id'])
+    recipe = Recipe.query.get_or_404(request.form['recipe_id'])
     items = recipe.recipe_items
     gamestate = GameState.query.get(0)
     for item in items:

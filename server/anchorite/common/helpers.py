@@ -60,7 +60,7 @@ def init(seed=False):
         db.session.add(unit_type)
 
         recipe = Recipe()
-        recipe.unit_type = unit_type
+        recipe.output = unit_type
         db.session.add(recipe)
 
         recipe_item = RecipeItem()

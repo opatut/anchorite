@@ -65,6 +65,7 @@ class Action(db.Model):
 
      def execute(self):
          pass
+
      def to_json(self):
         return dict(id=self.id,
             type=self.type,
@@ -83,12 +84,16 @@ class BrewAction(Action):
         d = Action.to_json(self)
         d["recipe_id"] = self.recipe_id
         return d
+
     def execute(self):
-        unit = UserUnit(unit_type=self.recipe.output)
+        unit_type = self.recipe.output
+        print(unit_type)
+        unit = UserUnit(unit_type=unit_type)
         self.user.units.append(unit)
 
     def __repr__(self):
         return "[Action] Brew: {}".format(repr(self.recipe))
+
 class CollectAction(Action):
     __mapper_args__ = {
        "polymorphic_identity": "collect_action"
@@ -121,7 +126,7 @@ class Recipe(db.Model):
         return dict(id=self.id,
             unit_type_id=self.unit_type_id,
             recipe_items=list(map(RecipeItem.to_json, self.recipe_items)))
-            
+
 
 class RecipeItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
