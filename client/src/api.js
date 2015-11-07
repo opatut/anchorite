@@ -19,7 +19,7 @@ async function get(url) {
 	return await fetch(url, { method: 'get' });
 }
 
-async function post(url, body) {
+async function post(url, body = {}) {
 	const data = new FormData();
 
 	for (let key in body) {
@@ -43,4 +43,8 @@ export async function getTypes() {
 
 export async function postBrewAction(recipeId) {
 	return await post('/action_brew', { recipe_id: recipeId });
+};
+
+export async function postCollectAction(recipeId) {
+	return await post('/action_collect');
 };

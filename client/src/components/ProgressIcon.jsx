@@ -7,7 +7,7 @@ export default class ProgressIcon extends React.Component {
 	}
 
 	render() {
-		const {children, start, end, duration, progress} = this.props;
+		const {children, start, end, duration, progress, round} = this.props;
 
 		let alpha;
 
@@ -28,7 +28,7 @@ export default class ProgressIcon extends React.Component {
 
 		alpha = Math.min(1, Math.max(0, alpha));
 
-		const className = classnames('progress-icon');
+		const className = classnames('progress-icon', {round});
 
 		const y = Math.sin(alpha*Math.PI*2 - Math.PI/2)*200 + 100;
 		const x = Math.cos(alpha*Math.PI*2 - Math.PI/2)*200 + 100;

@@ -1,0 +1,12 @@
+.queue-item {
+    width: 6vw;
+    height: 6vw;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}

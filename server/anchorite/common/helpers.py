@@ -75,7 +75,8 @@ def init(seed=False):
         action = BrewAction()
         action.recipe = recipe
         action.user = user
-        action.tick = 0
+        action.start = 0
+        action.end = 20
         db.session.add(action)
 
     db.session.commit()

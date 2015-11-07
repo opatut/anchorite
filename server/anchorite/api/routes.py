@@ -74,19 +74,19 @@ def types():
 @login_required
 def action_brew():
     recipe = Recipe.query.get_or_404(request.form['recipe_id'])
-    items = recipe.recipe_items
-    gamestate = GameState.query.get(0)
-    for item in items:
+
+    for item in recipe.recipe_items:
         current_user.remove_item(item.item_type_id)
 
-    current_user.actions.append(BrewAction(recipe=recipe,start=gamestate.tick, end=gamestate.tick + recipe.duration))
+    current_user.queue_action(BrewAction(recipe=recipe), recipe.duration)
+
     db.session.commit()
+
     return game_state()
 
 @app.route('/action_collect', methods=['GET', 'POST'])
 @login_required
 def action_collect():
-    gamestate = GameState.query.get(0)
-    current_user.actions.append(CollectAction(tick=gamestate.tick + 60))
+    current_user.queue_action(CollectAction(), 30)
     db.session.commit()
     return game_state()

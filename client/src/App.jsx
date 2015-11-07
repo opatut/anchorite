@@ -77,6 +77,10 @@ export default class App extends React.Component {
 				});
 				break;
 
+			case 'collect':
+				await api.postCollectAction();
+				::this.updateGameState();
+
 			case 'reload':
 				::this.updateGameState();
 				break;
@@ -126,7 +130,7 @@ export default class App extends React.Component {
 		if (this.state.gameState) {
 			// reload if some item in the queue is done
 			if (this.state.gameState.actions.some((action) => {
-				return action.tick <= tick;
+				return action.end <= tick;
 			})) {
 				::this.dispatch({
 					type: 'reload'
