@@ -42,9 +42,18 @@ export async function getTypes() {
 };
 
 export async function postBrewAction(recipeId) {
-	return await post('/action_brew', { recipe_id: recipeId });
+	return await post('/action/brew', {
+		recipe_id: recipeId
+	});
 };
 
 export async function postCollectAction(recipeId) {
-	return await post('/action_collect');
+	return await post('/action/collect');
+};
+
+export async function postAttackAction(targetUserId, unitIds) {
+	return await post('/action/attack', {
+		target_user_id: targetUserId,
+		unit_ids: unitIds.join(',')
+	});
 };

@@ -1,6 +1,12 @@
 from anchorite import manager, db
 from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, GameState, UserUnit
 
+USERS = [
+    ("paul",  "hunter2", ("caro", "mel", "lasse")),
+    ("caro",  "hunter2", ("paul", "mel", "lasse")),
+    ("mel",   "hunter2", ("paul", "caro")),
+    ("lasse", "hunter2", ("paul", "caro")),
+]
 
 ITEMS = [
     # icon               name
@@ -46,8 +52,14 @@ def init(seed=False):
     db.session.add(GameState(id=0, tick=0))
 
     if seed:
-        user = User("paul", "hunter2")
-        db.session.add(user)
+        users = {}
+        for name, password, _ in USERS:
+            user = User(name, password)
+            users[name] = user
+            db.session.add(user)
+
+        for name, _, friends in USERS:
+            users[name].friends = [users[friend] for friend in friends]
 
         item_types = {}
         for icon,name in ITEMS:
