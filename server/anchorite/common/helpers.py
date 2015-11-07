@@ -35,7 +35,7 @@ def init(seed=False):
     db.drop_all()
     db.create_all()
 
-    db.session.add(GameState(tick=0))
+    db.session.add(GameState(id=0, tick=0))
 
     if seed:
         user = User("paul", "hunter2")

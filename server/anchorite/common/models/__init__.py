@@ -1,5 +1,5 @@
 from anchorite import db
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, current_user
 from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
 
 class User(db.Model, UserMixin):
@@ -64,7 +64,8 @@ class BrewAction(Action):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def execute(self):
-        pass
+        unit = UserUnit(unit_type=self.recipe.output)
+        self.user.units.append(unit)
 
     def __repr__(self):
         return "[Action] Brew: {}".format(repr(self.recipe))
@@ -115,6 +116,7 @@ class RecipeItem(db.Model):
 class UnitType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipes = db.relationship("Recipe", backref="output", lazy="dynamic")
+    user_units = db.relationship("UserUnit", backref="unit_type", lazy="dynamic")
     name = db.Column(db.String(80))
 
     def to_json(self):
