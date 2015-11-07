@@ -7,5 +7,6 @@ export default {
 	sprite,
 	icon,
 	count: 4,
-	frames: [0, 2, 3, 2, 1, 2, 3, 2],
+	framerate: 2,
+	frames: [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 1, 2],
 };

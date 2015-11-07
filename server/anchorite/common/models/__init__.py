@@ -47,7 +47,7 @@ class BrewAction(Action):
         return d
 
     def execute(self):
-        unit = UserUnit(unit_type=self.recipe.output)
+        unit = UserUnit(unit_type=self.recipe.unit_type)
         self.user.units.append(unit)
 
     def __repr__(self):
@@ -94,7 +94,7 @@ class Recipe(db.Model):
             else:
                 out += "+ {}x {}".format(item.count, item.item_type.name)
 
-        out += " = {}".format(self.output.name)
+        out += " = {}".format(self.unit_type.name)
         return out
 
     def to_json(self):
@@ -117,7 +117,7 @@ class RecipeItem(db.Model):
 
 class UnitType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    recipes = db.relationship("Recipe", backref="output", lazy="dynamic")
+    recipes = db.relationship("Recipe", backref="unit_type", lazy="dynamic")
     user_units = db.relationship("UserUnit", backref="unit_type", lazy="dynamic")
     name = db.Column(db.String(80))
     image = db.Column(db.String(80))
@@ -160,7 +160,6 @@ class User(db.Model, UserMixin):
         # find last action
         if action.type in ('brew_action', 'collect_action'):
             active_actions = self.actions.order_by(db.desc(Action.end)).all()
-            print(active_actions)
 
             if active_actions:
                 action.start = active_actions[0].end
