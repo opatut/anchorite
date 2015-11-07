@@ -1,7 +1,7 @@
 from anchorite import app, db, login_manager
 from flask import render_template, json, request, redirect, url_for
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType
+from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit
 
 @app.route('/')
 @login_required
@@ -54,8 +54,13 @@ def logout():
 @login_required
 def game_state():
     state = {
+        "name" : current_user.name,
+        "tick" : 123,
+        "inventory" : list(map(UserItem.to_json, current_user.items)),
+        "units" : list(map(UserUnit.to_json, current_user.units)),
 
     }
+    
     return json.dumps(state)
 
 @app.route('/types')
