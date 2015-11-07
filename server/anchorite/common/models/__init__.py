@@ -24,6 +24,14 @@ class User(db.Model, UserMixin):
             db.session.delete(item_remove)
             db.session.commit()
 
+    def add_item(self, item_type_id, count=1):
+        item = self.items.filter(UserItem.item_type_id == item_type_id).first()
+        if item:
+            item.count += count
+        else:
+            self.items.append(UserItem(item_type_id=item_type_id))
+        db.session.commit()
+
     def queue_action(self, action, duration):
         current_tick = GameState.query.get(0).tick
         action.start = current_tick
@@ -119,7 +127,7 @@ class CollectAction(Action):
     def execute(self):
         items = ItemType.query.all()
         for i in range(random.randint(0, 10)):
-            self.user.items.append(UserItem(item_type=random.choice(items)))
+            self.user.add_item(UserItem(item_type=random.choice(items)))
 
 
 class Recipe(db.Model):
