@@ -10,6 +10,7 @@ app.config.from_pyfile("../config.py", silent=True)
 manager = Manager(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
+login_manager.login_view = "login"
 
 import anchorite.common.models as models
 import anchorite.api.routes

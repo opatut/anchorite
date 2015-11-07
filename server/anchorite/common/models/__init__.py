@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     password_hash= db.Column(db.String(100))
     actions = db.relationship("Action", backref="user", lazy="dynamic")
     items = db.relationship("UserItem", backref="user", lazy="dynamic")
+    units = db.relationship("UserUnit", backref="user", lazy="dynamic")
 
     def __init__(self, username, password):
         self.name = username
@@ -34,6 +35,12 @@ class UserItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     item_type_id = db.Column(db.Integer, db.ForeignKey('item_type.id'))
     count = db.Column(db.Integer, default=1)
+    def to_json(self):
+        return dict(id=self.id,
+            user_id=self.user_id,
+            item_type_id=self.item_type_id,
+            count =self.count)
+
 
 class Action(db.Model):
      id = db.Column(db.Integer, primary_key=True)
@@ -117,3 +124,13 @@ class GameState(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tick = db.Column(db.Integer)
 
+class UserUnit(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    unit_type_id = db.Column(db.Integer, db.ForeignKey('unit_type.id'))
+    count = db.Column(db.Integer, default=1)
+    def to_json(self):
+        return dict(id=self.id,
+            user_id=self.user_id,
+            unit_type_id=self.unit_type_id,
+            count =self.count)
