@@ -53,20 +53,22 @@ class UserItem(db.Model):
 
 
 class Action(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
-     type = db.Column(db.String(80))
-     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-     tick = db.Column(db.Integer, default=0)
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(80))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-     __mapper_args__ = {
+    start = db.Column(db.Integer, default=0)
+    end = db.Column(db.Integer, default=0)
+
+    __mapper_args__ = {
         "polymorphic_identity": "action",
         "polymorphic_on": type
-     }
+    }
 
-     def execute(self):
-         pass
+    def execute(self):
+        pass
 
-     def to_json(self):
+    def to_json(self):
         return dict(id=self.id,
             type=self.type,
             user_id=self.user_id,
@@ -98,7 +100,7 @@ class CollectAction(Action):
     }
 
     def execute(self):
-        pass
+
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
