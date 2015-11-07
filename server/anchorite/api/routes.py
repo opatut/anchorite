@@ -1,7 +1,7 @@
 from anchorite import app, db, login_manager
-from flask import render_template, json, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, abort, jsonify
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit, GameState
+from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit, GameState, AttackAction
 
 @app.route('/')
 @login_required
@@ -58,19 +58,21 @@ def game_state():
         "tick": GameState.query.get(0).tick,
         "inventory": list(map(UserItem.to_json, current_user.items)),
         "units": list(map(UserUnit.to_json, current_user.units)),
-        "actions": [action.to_json() for action in current_user.actions]
+        "actions": [action.to_json() for action in current_user.actions],
     }
 
-    return json.dumps(state)
+    return jsonify(state)
 
 @app.route('/types')
+@login_required
 def types():
     item_types = list(map(ItemType.to_json, ItemType.query.all()))
     recipes = list(map(Recipe.to_json, Recipe.query.all()))
-    unit_types = list(map (UnitType.to_json, UnitType.query.all()))
-    return json.dumps(dict(item_types=item_types, recipes=recipes, unit_types=unit_types))
+    unit_types = list(map(UnitType.to_json, UnitType.query.all()))
+    friends = [friend.to_json() for friend in current_user.friends]
+    return jsonify(dict(item_types=item_types, recipes=recipes, unit_types=unit_types, friends=friends))
 
-@app.route('/action_brew', methods=['GET', 'POST'])
+@app.route('/action/brew', methods=['GET', 'POST'])
 @login_required
 def action_brew():
     recipe = Recipe.query.get_or_404(request.form['recipe_id'])
@@ -84,9 +86,47 @@ def action_brew():
 
     return game_state()
 
-@app.route('/action_collect', methods=['GET', 'POST'])
+@app.route('/action/collect', methods=['GET', 'POST'])
 @login_required
 def action_collect():
-    current_user.queue_action(CollectAction(), 30)
+    current_user.queue_action(CollectAction(), 5)
+    db.session.commit()
+    return game_state()
+
+@app.route('/action/attack', methods=['GET', 'POST'])
+@login_required
+def action_attack():
+    # get the data
+    target_user_id = int(request.form['target_user_id'])
+    unit_ids = request.form['unit_ids'].split(',')
+
+    # get the models
+    target_user = User.query.get_or_404(target_user_id)
+    units = [Unit.query.get_or_404(unit_id) for unit_id in unit_ids]
+
+    # really? attack yourself?
+    if target_user_id == current_user.id:
+        abort(404)
+
+    for unit in units:
+        # only send units you own, bastard!
+        if unit.user != current_user:
+            abort(404)
+
+        # don't send one unit on two missions at the same time :D
+        if unit.attack_action:
+            abort(404)
+
+    # duration depends on amount of units you send
+    duration = len(units)**0.6 * random.randint(30, 50)
+
+    # make an action
+    action = AttackAction()
+    action.units = units
+    action.target_user = target_user
+
+    # queue it (it will be detected as immediate starting)
+    current_user.queue_action(action, duration)
+
     db.session.commit()
     return game_state()

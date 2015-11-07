@@ -19,7 +19,7 @@ class QueueItem extends React.Component {
 		if (action.type === 'brew_action') {
 			const recipe = find(this.context.types.recipes, action.recipe_id);
 			const unitType = find(this.context.types.unit_types, recipe.unit_type_id);
-			content = <img src={unitTypes[unitType.image].icon} />;
+			content = <img src={unitTypes['forestmonster'].icon} />;
 		} else if (action.type === 'collect_action') {
 			content = <img src={collectIcon} />;
 		}

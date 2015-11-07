@@ -3,10 +3,22 @@
     height: 6vw;
     border-radius: 100%;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
 
     img {
         width: 100%;
         height: 100%;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: url('../src/resources/queueFrame.png');
+        background-size: 100%;
+        z-index: 1;
     }
 }
