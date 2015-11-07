@@ -1,6 +1,12 @@
 .brewing-view {
     display: flex;
-
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: center;
+
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
 }

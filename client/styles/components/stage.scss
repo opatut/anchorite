@@ -1,0 +1,12 @@
+.stage {
+    text-align: center;
+    height: 6vw;
+
+    .items {
+        display: flex;
+
+        > * {
+            margin-right: 1vw;
+        }
+    }
+}
