@@ -1,15 +1,9 @@
-import frame0 from './0.png';
-import frame1 from './1.png';
-import frame2 from './2.png';
-import frame3 from './3.png';
+import sprite from './sprite.png';
 
-export default [
-    frame0,
-    frame2,
-    frame3,
-    frame2,
-    frame1,
-    frame2,
-    frame3,
-    frame2,
-];
+export default {
+	width: 25,
+	height: 40,
+	sprite,
+	count: 4,
+	frames: [0, 2, 3, 2, 1, 2, 3, 2],
+};

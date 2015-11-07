@@ -45,6 +45,10 @@ body {
     image-rendering: pixelated;
 }
 
+.sprite {
+    -webkit-filter: brightness(0.7);
+}
+
 @import './login';
 
 @import './components/hover-button';

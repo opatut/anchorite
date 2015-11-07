@@ -1,9 +1,16 @@
 import React from 'react';
+import classnames from 'classnames';
 
 export default class Sprite extends React.Component {
 	static propTypes = {
+		sprite: React.PropTypes.string.isRequired,
+		width: React.PropTypes.number.isRequired,
+		height: React.PropTypes.number.isRequired,
+		frames: React.PropTypes.arrayOf(React.PropTypes.number).isRequired,
+		count: React.PropTypes.number,
 		framerate: React.PropTypes.number,
-		frames: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+
+		className: React.PropTypes.string,
 	};
 
 	static defaultProps = {
@@ -45,13 +52,36 @@ export default class Sprite extends React.Component {
 	}
 
 	render() {
-		const {frames} = this.props;
-		const currentFrame = this.state.frame % frames.length;
+		const {width, height, sprite, frames, className, displayUnit} = this.props;
+		let {displayWidth, displayHeight} = this.props;
+		const count = this.props.count || frames.length;
 
-		return <div>
-			{frames.map((frame, i) => {
-				return <img key={i} src={frame} style={{ display: i == currentFrame ? null : 'none' }} />;
-			})}
-		</div>
+		const {frame} = this.state;
+		const currentFrame = frames[frame % frames.length];
+
+		const ratio = width/height;
+
+		if (displayWidth) {
+			displayHeight = `${displayWidth / ratio}${displayUnit}`;
+			displayWidth = `${displayWidth}${displayUnit}`;
+		} else if (displayHeight) {
+			displayWidth = `${displayHeight * ratio}${displayUnit}`;
+			displayHeight = `${displayHeight}${displayUnit}`;
+		}
+
+		const style = {
+			backgroundPosition: `-${currentFrame*100}% 0px`,
+			backgroundSize: `${count * 100}% 100%`,
+			backgroundImage: `url(${sprite})`,
+			width: displayWidth || width,
+			height: displayHeight || height,
+		};
+
+		const spacerStyle = {
+			paddingBottom: `${height/width*100}%`,
+			width: '100%',
+		};
+
+		return <div className={classnames('sprite', className)} style={style}><div style={spacerStyle} /></div>;
 	}
 }
