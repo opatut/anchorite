@@ -1,0 +1,46 @@
+.hover-button {
+    position: relative;
+    display: inline-block;
+
+    > .overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        opacity: 0;
+    }
+
+    button {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%;
+        height: 50%;
+        background: linear-gradient(to bottom, #0F0, #0A0);
+        border: none;
+        color: white;
+        // border-bottom-left-radius: 20%;
+        border-radius: 4px;
+        text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+
+        &:hover {
+            background: linear-gradient(to bottom, #2F2, #2C2);
+        }
+
+        &:active {
+            background: linear-gradient(to top, #0F0, #0A0);
+        }
+    }
+
+    &:hover {
+        > .overlay {
+            opacity: 1;
+        }
+    }
+}
