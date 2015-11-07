@@ -123,7 +123,7 @@ class Recipe(db.Model):
     def to_json(self):
         return dict(id=self.id,
             unit_type_id=self.unit_type_id,
-            recipe_items=list(map(RecipeItem.to_json, self.recipe_items))
+            recipe_items=list(map(RecipeItem.to_json, self.recipe_items)),
             duration=self.duration)
 
 
