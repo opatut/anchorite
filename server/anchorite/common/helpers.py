@@ -1,5 +1,6 @@
 from anchorite import manager, db
-from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit
+from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, GameState, UserUnit
+
 
 items = [
     #icon       name
@@ -18,12 +19,12 @@ items = [
     ("destroying_angel", "Destroying angel"),
         ]
 
-monster = [ 
+monster = [
     ("forestmonster"),
     ("blubb"),
     ("pib"),
 
-        
+
 
 
         ]
@@ -33,6 +34,8 @@ monster = [
 def init(seed=False):
     db.drop_all()
     db.create_all()
+
+    db.session.add(GameState(tick=0))
 
     if seed:
         user = User("paul", "hunter2")
@@ -49,7 +52,7 @@ def init(seed=False):
         user_item_paul = UserItem()
         user_item_paul.user = user
         user_item_paul.item_type = item_type_pebble
-        user_item_paul.count = 10 
+        user_item_paul.count = 10
         db.session.add(user_item_paul)
 
         unit_type = UnitType()
@@ -70,6 +73,6 @@ def init(seed=False):
         action.recipe = recipe
         action.user = user
         action.tick = 0
-        db.session.add(action)    
+        db.session.add(action)
 
     db.session.commit()

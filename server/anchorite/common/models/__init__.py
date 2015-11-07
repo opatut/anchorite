@@ -74,11 +74,10 @@ class BrewAction(Action):
         d["recipe_id"] = self.recipe_id
         return d
     def execute(self):
-        print(self)
+        pass
 
     def __repr__(self):
         return "[Action] Brew: {}".format(repr(self.recipe))
-
 class CollectAction(Action):
     __mapper_args__ = {
        "polymorphic_identity": "collect_action"
@@ -130,6 +129,10 @@ class UnitType(db.Model):
 
     def to_json(self):
         return dict(id=self.id, name=self.name)
+
+class GameState(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tick = db.Column(db.Integer)
 
 class UserUnit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
