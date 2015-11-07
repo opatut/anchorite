@@ -8,7 +8,6 @@ friends = db.Table('friends', db.metadata,
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-
 class Action(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(80))
@@ -63,7 +62,7 @@ class CollectAction(Action):
     def execute(self):
         items = ItemType.query.all()
         for i in range(random.randint(0, 10)):
-            self.user.items.append(UserItem(item_type=random.choice(items)))
+            self.user.add_item(UserItem(item_type=random.choice(items)))
 
 class AttackAction(Action):
     id = db.Column(db.Integer, db.ForeignKey('action.id'), primary_key=True)
@@ -151,6 +150,14 @@ class User(db.Model, UserMixin):
         self.name = username
         self.salt = generate_random_salt()
         self.password_hash = generate_password_hash(password, self.salt)
+
+    def add_item(self, item_type_id, count=1):
+        item = self.items.filter(UserItem.item_type_id == item_type_id).first()
+        if item:
+            item.count += count
+        else:
+            self.items.append(UserItem(item_type_id=item_type_id))
+        db.session.commit()
 
     def remove_item(self, item_type_id, count=1):
         item_remove = self.items.filter(UserItem.item_type_id == item_type_id).first()
