@@ -1,12 +1,56 @@
 .brewing-view {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
+    overflow: hidden;
+    position: relative;
 
-    > div {
+    > .stage {
+        position: absolute;
+        left: 50%;
+        top: 10%;
+        width: 80%;
+        transform: translate(-50%, -50%);
+    }
+
+    > .shelf {
+        position: absolute;
+
+        &.left {
+            left: 20%;
+            top: 80%;
+            transform: translate(-50%, -100%);
+        }
+
+        &.right {
+            right: 20%;
+            top: 80%;
+            transform: translate(50%, -100%);
+        }
+    }
+
+    > .cauldron {
+        position: absolute;
+        left: 50%;
+        top: 55%;
+        transform: translate(-50%, -100%);
+    }
+
+    > .units {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 80%;
+        height: 20vw;
+        transform: translate(-50%, -50%);
+
         display: flex;
-        align-items: center;
-        justify-content: space-around;
+        justify-content: center;
+        align-items: stretch;
+
+        > div {
+            height: 100%;
+        }
+
+        img {
+            height: 100%;
+        }
     }
 }

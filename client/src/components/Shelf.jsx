@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Item from './Item';
 import HoverButton from './HoverButton';
@@ -11,7 +12,7 @@ export default class Shelf extends React.Component {
 	}
 
 	render() {
-		const {onStageItem, inventory} = this.props;
+		const {onStageItem, inventory, className} = this.props;
 		const {dispatch} = this.context;
 
 		const onClick = item_type_id => event => {
@@ -24,10 +25,10 @@ export default class Shelf extends React.Component {
 			});
 		}
 
-		return <div className='shelf'>
+		return <div className={classnames('shelf', className)}>
 			{inventory.map(({item_type_id, count}, i) => {
 				const itemType = find(this.context.types.item_types, item_type_id);
-				return <HoverButton color='green' icon='+' onClick={onClick(item_type_id)} key={`${item_type_id}-${i}-${count}`}>
+				return <HoverButton color='green' icon='+' onClick={onClick(item_type_id)} key={item_type_id}>
 					<Item itemType={itemType} count={count} />
 				</HoverButton>;
 			})}

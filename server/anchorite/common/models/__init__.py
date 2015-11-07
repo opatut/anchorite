@@ -143,9 +143,10 @@ class UnitType(db.Model):
     recipes = db.relationship("Recipe", backref="output", lazy="dynamic")
     user_units = db.relationship("UserUnit", backref="unit_type", lazy="dynamic")
     name = db.Column(db.String(80))
+    image = db.Column(db.String(80))
 
     def to_json(self):
-        return dict(id=self.id, name=self.name)
+        return dict(id=self.id, name=self.name, image=self.image)
 
 class GameState(db.Model):
     id = db.Column(db.Integer, primary_key=True)

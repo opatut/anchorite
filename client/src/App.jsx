@@ -122,10 +122,10 @@ export default class App extends React.Component {
 			return <div>Loading...</div>;
 		}
 
-		const {stage, inventory} = this.state;
+		const {stage, inventory, gameState} = this.state;
 
 		return <div className="app">
-			<BrewingView stage={stage} inventory={inventory} />
+			<BrewingView stage={stage} inventory={inventory} units={gameState.units} />
 			<div className="account">
 				<a href="/logout">Logout</a>
 			</div>

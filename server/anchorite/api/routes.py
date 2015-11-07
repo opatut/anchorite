@@ -83,3 +83,15 @@ def action_brew():
     current_user.actions.append(BrewAction(recipe=recipe, tick=gamestate.tick + recipe.duration))
     db.session.commit()
     return game_state()
+<<<<<<< Updated upstream
+=======
+
+@app.route('/action_collect', methods=['GET', 'POST'])
+@login_required
+def action_collect():
+    gamestate = GameState.query.get(0)
+    current_user.actions.append(CollectAction(tick=gamestate.tick + 60))
+    db.session.commit()
+    return game_state()
+    
+>>>>>>> Stashed changes
