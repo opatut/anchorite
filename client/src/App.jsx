@@ -115,11 +115,15 @@ export default class App extends React.Component {
 
 	componentDidMount() {
 		this._interval = setInterval(::this.tick, 400);
+		this._interval2 = setInterval(::this.tick2, 4000);
 	}
 
 	componentWillUnmount() {
 		if (this._interval) {
 			clearInterval(this._interval);
+		}
+		if (this._interval2) {
+			clearInterval(this._interval2);
 		}
 	}
 
@@ -137,6 +141,10 @@ export default class App extends React.Component {
 				});
 			}
 		}
+	}
+
+	tick2() {
+		::this.updateGameState();
 	}
 
 	async updateGameState() {

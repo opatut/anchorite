@@ -30,13 +30,11 @@ class User(db.Model, UserMixin):
 
         # find last action
         if action.type in ('brew_action', 'collect_action'):
-            last_action = self.actions \
-                .filter(Action.type == 'brew_action' or Action.type == 'collect_action') \
-                .order_by(db.desc(Action.end)) \
-                .limit(1) \
-                .first()
-            if last_action:
-                action.start = last_action.end
+            active_actions = self.actions.order_by(db.desc(Action.end)).all()
+            print(active_actions)
+
+            if active_actions:
+                action.start = active_actions[0].end
         # else start right away
         action.end = action.start + duration
 
