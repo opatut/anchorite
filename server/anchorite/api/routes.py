@@ -27,11 +27,10 @@ def register():
     user = User(username, password)
     db.session.add(user)
 
-# This file is for Caro <3
 @app.route('/game_state')
 def game_state():
     state = {
-        "name" : "Peter"
+        
     }
     return json.dumps(state)
 
@@ -39,5 +38,5 @@ def game_state():
 def types():
     item_types = list(map(ItemType.to_json, ItemType.query.all()))
     recipes = list(map(Recipe.to_json, Recipe.query.all()))
-
-    return json.dumps(dict(item_types=item_types, recipes=recipes))
+    unit_types = list(map (UnitType.to_json, UnitType.query.all()))
+    return json.dumps(dict(item_types=item_types, recipes=recipes, unit_types=unit_types))

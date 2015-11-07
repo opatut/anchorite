@@ -16,7 +16,18 @@ items = [
     ("death_cap", "Death cap"),
     ("sickener", "Sickener"),
     ("destroying_angel", "Destroying angel"),
-]
+        ]
+
+monster = [ 
+    ("forestmonster"),
+    ("blubb"),
+    ("pib"),
+
+        
+
+
+        ]
+
 
 @manager.command
 def init(seed=False):
