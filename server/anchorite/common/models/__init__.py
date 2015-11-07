@@ -5,8 +5,8 @@ from flask.ext.scrypt import generate_random_salt, generate_password_hash, check
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    salt = db.Column(db.String(64))
-    password_hash= db.Column(db.String(64))
+    salt = db.Column(db.String(100))
+    password_hash= db.Column(db.String(100))
     actions = db.relationship("Action", backref="user", lazy="dynamic")
     items = db.relationship("UserItem", backref="user", lazy="dynamic")
 
@@ -24,7 +24,7 @@ class ItemType(db.Model):
     icon = db.Column(db.String(80))
     user_items = db.relationship("UserItem", backref="item_type", lazy="dynamic")
     recipe_items = db.relationship("RecipeItem", backref="item_type", lazy="dynamic")
-    
+
     def to_json(self):
         return dict(name=self.name, icon=self.icon)
 
@@ -90,7 +90,7 @@ class Recipe(db.Model):
         return out
 
     def to_json(self):
-        return dict(unit_type_id=self.unit_type_id, 
+        return dict(unit_type_id=self.unit_type_id,
             recipe_items=list(map(RecipeItem.to_json, self.recipe_items)))
 
 

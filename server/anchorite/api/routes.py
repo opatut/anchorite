@@ -1,5 +1,6 @@
 from anchorite import app, db
-from flask import render_template, json, request
+from flask import render_template, json, request, redirect, url_for
+from flask.ext.login import login_user, logout_user, current_user
 from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType
 
 @app.route('/')
@@ -8,6 +9,9 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -16,16 +20,34 @@ def login():
         if user and user.check_password(password):
             #Login Sucesss
             login_user(user)
+            return redirect(url_for('index'))
+        else:
+            print("Error wrong password or username")
 
     return render_template('login.html')
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    username = request.form['username']
-    password = request.form['password']
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-    user = User(username, password)
-    db.session.add(user)
+        print(username)
+        print(password)
+
+        user = User(username, password)
+        db.session.add(user)
+        db.session.commit()
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    if current_user.is_authenticated:
+         logout_user()
+
+    return redirect(url_for('index'))
 
 # This file is for Caro <3
 @app.route('/game_state')

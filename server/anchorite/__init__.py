@@ -11,10 +11,10 @@ manager = Manager(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
-import anchorite.common.models
+import anchorite.common.models as models
 import anchorite.api.routes
 import anchorite.daemon
 
 @login_manager.user_loader
 def load_user(user_id):
-    return models.User.get(user_id)
+    return models.User.query.get(user_id)

@@ -4,5 +4,7 @@ SQLALCHEMY_ECHO = False
 SQLALCHEMY_DATABASE_URI = "sqlite:///../../anchorite.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+SECRET_KEY="innogamejam"
+
 DEBUG = True
 WEBPACK_SERVER = "http://localhost:5001/"
