@@ -1,0 +1,22 @@
+.progress-icon {
+    position: relative;
+    display: inline-block;
+
+    &.round {
+        border-radius: 100%;
+        overflow: hidden;
+    }
+
+    > .overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        // overflow: hidden;
+    }
+
+    svg {
+        fill: rgba(0, 0, 0, 0.5);
+    }
+}

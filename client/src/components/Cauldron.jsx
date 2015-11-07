@@ -1,9 +1,12 @@
 import React from 'react';
 
 export default class Cauldron extends React.Component {
-	render() {
-		return <div className='cauldron'>
+	static contextTypes = {
+		dispatch: React.PropTypes.func.isRequired,
+	}
 
-		</div>;
+	render() {
+		const {dispatch} = this.context;
+		return <div className='cauldron' onClick={() => dispatch({ type: 'collect' })}/>;
 	}
 }

@@ -16,12 +16,14 @@ export default class App extends React.Component {
 			gameState: null,
 			stage: new Inventory(),
 			inventory: new Inventory(),
+			tick: 0,
 		};
 	}
 
 	static childContextTypes = {
 		dispatch: React.PropTypes.func,
 		types: React.PropTypes.object,
+		tick: React.PropTypes.number,
 	};
 
 	componentWillUpdate(props, state) {
@@ -47,6 +49,7 @@ export default class App extends React.Component {
 		return {
 			dispatch: ::this.dispatch,
 			types: this.types,
+			tick: this.state.tick,
 		};
 	}
 
@@ -72,6 +75,14 @@ export default class App extends React.Component {
 				this.setState({
 					stage: this.state.stage.subtract(new Inventory({[action.item_type_id]: action.count}))
 				});
+				break;
+
+			case 'collect':
+				await api.postCollectAction();
+				::this.updateGameState();
+
+			case 'reload':
+				::this.updateGameState();
 				break;
 
 			default:
@@ -102,9 +113,35 @@ export default class App extends React.Component {
 		::this.updateTypes();
 	}
 
+	componentDidMount() {
+		this._interval = setInterval(::this.tick, 400);
+	}
+
+	componentWillUnmount() {
+		if (this._interval) {
+			clearInterval(this._interval);
+		}
+	}
+
+	tick() {
+		const tick = this.state.tick + 0.4;
+		this.setState({tick});
+
+		if (this.state.gameState) {
+			// reload if some item in the queue is done
+			if (this.state.gameState.actions.some((action) => {
+				return action.end <= tick;
+			})) {
+				::this.dispatch({
+					type: 'reload'
+				});
+			}
+		}
+	}
+
 	async updateGameState() {
 		let gameState = await api.getGameState();
-		this.setState({ gameState })
+		this.setState({ gameState, tick: gameState.tick })
 	}
 
 	async updateTypes() {
@@ -125,7 +162,7 @@ export default class App extends React.Component {
 		const {stage, inventory, gameState} = this.state;
 
 		return <div className="app">
-			<BrewingView stage={stage} inventory={inventory} units={gameState.units} />
+			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={gameState.actions} />
 			<div className="account">
 				<a href="/logout">Logout</a>
 			</div>

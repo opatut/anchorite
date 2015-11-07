@@ -52,9 +52,12 @@ body {
 @import './login';
 
 @import './components/hover-button';
+@import './components/progress-icon';
 @import './components/item';
 @import './components/shelf';
 @import './components/stage';
 @import './components/cauldron';
+@import './components/queue-item';
+@import './components/queue';
 
 @import './views/brewing-view';

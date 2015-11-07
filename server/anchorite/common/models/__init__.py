@@ -23,8 +23,23 @@ class User(db.Model, UserMixin):
             db.session.delete(item_remove)
             db.session.commit()
 
+    def queue_action(self, action, duration):
+        current_tick = GameState.query.get(0).tick
+        action.start = current_tick
 
+        # find last action
+        if action.type in ('brew_action', 'collect_action'):
+            last_action = self.actions \
+                .filter(Action.type == 'brew_action' or Action.type == 'collect_action') \
+                .order_by(db.desc(Action.end)) \
+                .limit(1) \
+                .first()
+            if last_action:
+                action.start = last_action.end
+        # else start right away
+        action.end = action.start + duration
 
+        self.actions.append(action)
 
     def check_password(self, password):
         return check_password_hash(password, self.password_hash, self.salt)
@@ -53,24 +68,27 @@ class UserItem(db.Model):
 
 
 class Action(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
-     type = db.Column(db.String(80))
-     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-     tick = db.Column(db.Integer, default=0)
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(80))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-     __mapper_args__ = {
+    start = db.Column(db.Integer, default=0)
+    end = db.Column(db.Integer, default=0)
+
+    __mapper_args__ = {
         "polymorphic_identity": "action",
         "polymorphic_on": type
-     }
+    }
 
-     def execute(self):
-         pass
+    def execute(self):
+        pass
 
-     def to_json(self):
+    def to_json(self):
         return dict(id=self.id,
             type=self.type,
             user_id=self.user_id,
-            tick=self.tick,
+            start=self.start,
+            end=self.end,
             )
 
 

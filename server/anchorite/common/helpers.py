@@ -84,5 +84,4 @@ def init(seed=False):
                 recipe_item.item_type = item_types[item]
                 db.session.add(recipe_item)
 
-
     db.session.commit()
