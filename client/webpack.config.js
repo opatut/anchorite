@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-	devtool: 'cheap-module-eval-source-map',
+	devtool: 'source-map',
 	entry: [
 		'regenerator/runtime.js',
 		'./src/index.jsx',
@@ -16,7 +16,7 @@ module.exports = {
 		loaders: [
 			{
 				test: /\.jsx?$/,
-				loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=stage-0&presets[]=react'],
+				loaders: ['react-hot', 'babel?stage=0&optional[]=runtime'],
 				include: [path.join(__dirname, 'src')],
 				exclude: /node_modules/,
 			},

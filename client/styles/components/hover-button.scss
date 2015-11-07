@@ -19,7 +19,6 @@
         transform: translate(-50%, -50%);
         width: 50%;
         height: 50%;
-        background: linear-gradient(to bottom, #0F0, #0A0);
         border: none;
         color: white;
         // border-bottom-left-radius: 20%;
@@ -28,6 +27,10 @@
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
+    }
+
+    &.green button {
+        background: linear-gradient(to bottom, #0F0, #0A0);
 
         &:hover {
             background: linear-gradient(to bottom, #2F2, #2C2);
@@ -35,6 +38,18 @@
 
         &:active {
             background: linear-gradient(to top, #0F0, #0A0);
+        }
+    }
+
+    &.red button {
+        background: linear-gradient(to bottom, #F00, #C00);
+
+        &:hover {
+            background: linear-gradient(to bottom, #F22, #C22);
+        }
+
+        &:active {
+            background: linear-gradient(to top, #F00, #C00);
         }
     }
 

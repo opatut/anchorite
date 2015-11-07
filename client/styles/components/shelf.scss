@@ -1,0 +1,36 @@
+.shelf {
+    width: 30vw;
+    height: 45vw;
+    background: url('../src/resources/shelf.png');
+    background-size: 100%;
+
+    -webkit-filter: brightness(0.4);
+    transition: all 0.2s;
+
+    display: block;
+    position: relative;
+
+    &:hover {
+        -webkit-filter: brightness(0.9);
+    }
+
+    > * {
+        position: absolute;
+
+        &:nth-child(1) { left: 20%; top: 22.4%; }
+        &:nth-child(2) { left: 40%; top: 22.4%; }
+        &:nth-child(3) { left: 60%; top: 22.4%; }
+
+        &:nth-child(4) { left: 20%; top: 40.4%; }
+        &:nth-child(5) { left: 40%; top: 40.4%; }
+        &:nth-child(6) { left: 60%; top: 40.4%; }
+
+        &:nth-child(7) { left: 20%; top: 58%; }
+        &:nth-child(8) { left: 40%; top: 58%; }
+        &:nth-child(9) { left: 60%; top: 58%; }
+
+        &:nth-child(10) { left: 20%; top: 76%; }
+        &:nth-child(11) { left: 40%; top: 76%; }
+        &:nth-child(12) { left: 60%; top: 76%; }
+    }
+}
