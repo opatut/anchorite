@@ -8,9 +8,12 @@ import * as unitSprites from '../resources/units';
 export default class BrewingView extends React.Component {
 	static contextTypes = {
 		types: React.PropTypes.object.isRequired,
+		dispatch: React.PropTypes.func.isRequired,
 	}
 
 	render() {
+		const {dispatch} = this.context;
+
 		const {
 			stage,
 			inventory,
@@ -35,7 +38,11 @@ export default class BrewingView extends React.Component {
 			<Shelf inventory={inventoryLeft} className="left" />
 			<Shelf inventory={inventoryRight} className="right" />
 
-			<Cauldron />
+			<div className="center">
+				<button>Attack</button>
+				<Cauldron />
+				<button onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
+			</div>
 
 			<Stage items={stage} />
 

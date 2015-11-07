@@ -59,6 +59,7 @@ def game_state():
         "inventory": list(map(UserItem.to_json, current_user.items)),
         "units": list(map(UserUnit.to_json, current_user.units)),
         "actions": [action.to_json() for action in current_user.actions],
+        "incoming_attacks": [attack.to_json() for attack in current_user.incoming_attacks]
     }
 
     return jsonify(state)

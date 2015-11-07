@@ -77,6 +77,12 @@ class AttackAction(Action):
     def execute(self):
         pass
 
+    def to_json(self):
+        d = Action.to_json(self)
+        d["target_user_id"] = self.target_user_id
+        d["unit_ids"] = [unit.id for unit in self.units]
+        return d
+
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     unit_type_id = db.Column(db.Integer, db.ForeignKey('unit_type.id'))
