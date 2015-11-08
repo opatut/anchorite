@@ -12,6 +12,6 @@ cd ..
 git checkout -B deploy
 git add server/anchorite/static/* -f
 git commit -m "Deploy $VER"
-git push origin deploy
+git push --force origin deploy
 
 git checkout $CURRENT_BRANCH
