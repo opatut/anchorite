@@ -41,6 +41,12 @@ body {
     position: absolute;
     right: 0;
     top: 0;
+
+    .button {
+        font-size: 12pt;
+        padding: 0.2vw 1vw;
+        margin: 1vw;
+    }
 }
 
 :focus {

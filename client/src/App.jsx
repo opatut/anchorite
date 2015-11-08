@@ -207,7 +207,7 @@ export default class App extends BaseComponent {
 			</Modal>
 
 			<div className="account">
-				<a href="/logout">Logout</a>
+				<a className="button" href="/logout">Logout</a>
 			</div>
 		</div>;
 	}
