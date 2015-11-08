@@ -51,6 +51,44 @@ def init(seed=False):
 
     db.session.add(GameState(id=0, tick=0))
 
+    item_types = {}
+    for icon,name,rarity in ITEMS:
+        item_type = ItemType()
+        item_type.name = name
+        item_type.icon = icon
+        item_type.rarity = rarity
+        db.session.add(item_type)
+        item_types[icon] = item_type
+
+    user_item_paul = UserItem()
+    user_item_paul.user = user
+    user_item_paul.item_type = item_types["branch"]
+    user_item_paul.count = 10
+    db.session.add(user_item_paul)
+
+
+    unit_types = {}
+    for image,name in UNITS:
+        unit_type = UnitType()
+        unit_type.name = name
+        unit_type.image = image
+        db.session.add(unit_type)
+        unit_types[image] = unit_type
+
+
+    for name, outcome, items, duration in RECIPES:
+        recipe = Recipe()
+        recipe.name = name
+        recipe.unit_type = unit_types[outcome]
+        recipe.duration = duration
+        db.session.add(recipe)
+
+        for item in items:
+            recipe_item = RecipeItem()
+            recipe_item.recipe = recipe
+            recipe_item.item_type = item_types[item]
+            db.session.add(recipe_item)
+
     if seed:
         users = {}
         for name, password, _ in USERS:
@@ -62,42 +100,5 @@ def init(seed=False):
             for friend in friends:
                 users[name].friends.append(users[friend])
 
-        item_types = {}
-        for icon,name,rarity in ITEMS:
-            item_type = ItemType()
-            item_type.name = name
-            item_type.icon = icon
-            item_type.rarity = rarity
-            db.session.add(item_type)
-            item_types[icon] = item_type
-
-        user_item_paul = UserItem()
-        user_item_paul.user = user
-        user_item_paul.item_type = item_types["branch"]
-        user_item_paul.count = 10
-        db.session.add(user_item_paul)
-
-
-        unit_types = {}
-        for image,name in UNITS:
-            unit_type = UnitType()
-            unit_type.name = name
-            unit_type.image = image
-            db.session.add(unit_type)
-            unit_types[image] = unit_type
-
-
-        for name, outcome, items, duration in RECIPES:
-            recipe = Recipe()
-            recipe.name = name
-            recipe.unit_type = unit_types[outcome]
-            recipe.duration = duration
-            db.session.add(recipe)
-
-            for item in items:
-                recipe_item = RecipeItem()
-                recipe_item.recipe = recipe
-                recipe_item.item_type = item_types[item]
-                db.session.add(recipe_item)
 
     db.session.commit()
