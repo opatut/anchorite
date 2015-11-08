@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
+import {BaseComponent} from '../BaseComponent';
 
-export default class HoverButton extends React.Component {
+export default class HoverButton extends BaseComponent {
 	render() {
 		const {color, icon, children, onClick, title} = this.props;
 

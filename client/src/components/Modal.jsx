@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
+import {BaseComponent} from '../BaseComponent';
 
-export default class Modal extends React.Component {
+export default class Modal extends BaseComponent {
 	render() {
 		const {children, open, className, onToggle} = this.props;
 

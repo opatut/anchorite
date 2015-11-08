@@ -2,6 +2,8 @@ import random
 from anchorite import db
 from flask.ext.login import UserMixin, current_user
 from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
+import math
+from random import shuffle
 
 friends = db.Table('friends', db.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -74,12 +76,44 @@ class AttackAction(Action):
     }
 
     def execute(self):
-        pass
+        def win():
+            pass
+
+        def lose():
+            pass
+
+        # get units
+        enemies = shuffle(target_user.units.filter_by(attack_action=None).all())
+        units = shuffle(self.units.all())
+
+        # roll for luck
+        luck = Math.random()
+
+        if not enemies:
+            win()
+        else:
+            # take only half of the enemy units, but at least one
+            enemies = enemies[:max(1, math.ceil(len(enemies) / 2.0))]
+
+            while units or enemies:
+                i1 = randint(0, len(units))
+                i2 = randint(0, len(enemies))
+                u = units[i1]
+                e = enemies[i2]
+
+                # Now fight!
+                u_strength = 1
+                e_strength = 2
+
+                ratio = u_strength/e_strength
+
+        # "return" units home
+        self.units = []
 
     def to_json(self):
         d = Action.to_json(self)
         d["target_user_id"] = self.target_user_id
-        d["unit_ids"] = [unit.id for unit in self.units]
+        d["units"] = [unit.to_json() for unit in self.units]
         return d
 
 class Recipe(db.Model):

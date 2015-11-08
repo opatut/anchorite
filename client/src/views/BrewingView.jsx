@@ -1,11 +1,10 @@
 import React from 'react';
+import {BaseComponent} from '../BaseComponent';
 
-import {Queue, Sprite, Cauldron, Shelf, Stage} from '../components';
+import {Unit, Queue, Sprite, Cauldron, Shelf, Stage} from '../components';
 import {Inventory, find} from '../data';
 
-import * as unitSprites from '../resources/units';
-
-export default class BrewingView extends React.Component {
+export default class BrewingView extends BaseComponent {
 	static contextTypes = {
 		types: React.PropTypes.object.isRequired,
 		dispatch: React.PropTypes.func.isRequired,
@@ -27,12 +26,7 @@ export default class BrewingView extends React.Component {
 
 		return <div className="brewing-view">
 			<div className="units">
-				{ units && units.map((unit) => {
-					const unitType = find(this.context.types.unit_types, unit.unit_type_id);
-					const sprite = unitSprites[unitType.image];
-					return <Sprite {...sprite} key={unit.id} displayHeight={12} displayUnit='vw' />;
-				})}
-
+				{ units && units.map((unit) => <Unit {...unit} height={12} key={unit.id} />) }
 			</div>
 
 			<Stage items={stage} />

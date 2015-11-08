@@ -1,12 +1,17 @@
 import React from 'react';
 
 import {Modal} from './components';
-import {FriendsView, BrewingView} from './views';
+import {AttacksView, FriendsView, BrewingView} from './views';
 import * as api from './api';
 import {Inventory} from './data';
 import {find} from 'lodash';
+import {BaseComponent} from './BaseComponent';
+import clock from './clock';
 
-export default class App extends React.Component {
+const TICK_INTERVAL = 1;
+const POLL_INTERVAL = 10;
+
+export default class App extends BaseComponent {
 	constructor() {
 		super();
 
@@ -26,7 +31,6 @@ export default class App extends React.Component {
 	static childContextTypes = {
 		dispatch: React.PropTypes.func,
 		types: React.PropTypes.object,
-		tick: React.PropTypes.number,
 	};
 
 	componentWillUpdate(props, state) {
@@ -52,7 +56,6 @@ export default class App extends React.Component {
 		return {
 			dispatch: ::this.dispatch,
 			types: this.types,
-			tick: this.state.tick,
 		};
 	}
 
@@ -89,6 +92,9 @@ export default class App extends React.Component {
 			await this::this.addFriend(action.username);
 		} else if (type === 'attacks.toggle') {
 			await this::this.toggleAttacksOverlay(action.targetUserId);
+		} else if (type === 'attack') {
+			const {targetUserId, unitIds} = action;
+			await api.postAttackAction(targetUserId, unitIds);
 		} else {
 			console.warn(`Unhandled action type: ${type}`);
 		}
@@ -122,22 +128,23 @@ export default class App extends React.Component {
 	}
 
 	componentDidMount() {
-		this._interval = setInterval(::this.tick, 400);
-		this._interval2 = setInterval(::this.tick2, 4000);
+		this._intervalTick = setInterval(::this.tick, 1000*TICK_INTERVAL);
+		this._intervalPoll = setInterval(::this.poll, 1000*POLL_INTERVAL);
 	}
 
 	componentWillUnmount() {
-		if (this._interval) {
-			clearInterval(this._interval);
+		if (this._intervaTickl) {
+			clearInterval(this._intervaTickl);
 		}
-		if (this._interval2) {
-			clearInterval(this._interval2);
+		if (this._intervaPoll2) {
+			clearInterval(this._intervaPoll2);
 		}
 	}
 
 	tick() {
-		const tick = this.state.tick + 0.4;
+		const tick = this.state.tick + TICK_INTERVAL;
 		this.setState({tick});
+		clock.set(tick);
 
 		if (this.state.gameState) {
 			// reload if some item in the queue is done
@@ -151,7 +158,7 @@ export default class App extends React.Component {
 		}
 	}
 
-	tick2() {
+	poll() {
 		::this.updateGameState();
 	}
 
@@ -181,15 +188,22 @@ export default class App extends React.Component {
 
 		const {stage, inventory, gameState, friendsOpen, attacksOpen, attackTargetUserId} = this.state;
 
+		const outgoingAttacks = gameState.actions.filter((a) => a.type === 'attack_action');
+		const normalActions = gameState.actions.filter((a) => a.type !== 'attack_action');
+
 		return <div className="app">
-			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={gameState.actions} />
+			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={normalActions} />
 
 			<Modal open={friendsOpen} onToggle={::this.toggleFriendsOverlay}>
 				<FriendsView />
 			</Modal>
 
 			<Modal open={attacksOpen} onToggle={::this.toggleAttacksOverlay}>
-				Attack stuff {attackTargetUserId}
+				<AttacksView
+					attackTargetUserId={attackTargetUserId}
+					units={gameState.units}
+					outgoing={outgoingAttacks}
+					incoming={gameState.incoming_attacks} />
 			</Modal>
 
 			<div className="account">

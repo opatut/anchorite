@@ -1,6 +1,7 @@
 import React from 'react';
+import {BaseComponent} from '../BaseComponent';
 
-export default class FriendsView extends React.Component {
+export default class FriendsView extends BaseComponent {
 	static contextTypes = {
 		types: React.PropTypes.object.isRequired,
 		dispatch: React.PropTypes.func.isRequired,

@@ -1,11 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
+import {BaseComponent} from '../BaseComponent';
 
 import Item from './Item';
 import HoverButton from './HoverButton';
 import {find} from '../data';
 
-export default class Shelf extends React.Component {
+export default class Shelf extends BaseComponent {
 	static contextTypes = {
 		dispatch: React.PropTypes.func.isRequired,
 		types: React.PropTypes.object.isRequired,

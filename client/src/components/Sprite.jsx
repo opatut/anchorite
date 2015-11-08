@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
+import {BaseComponent} from '../BaseComponent';
 
-export default class Sprite extends React.Component {
+export default class Sprite extends BaseComponent {
 	static propTypes = {
 		sprite: React.PropTypes.string.isRequired,
 		width: React.PropTypes.number.isRequired,

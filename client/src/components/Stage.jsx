@@ -1,10 +1,11 @@
 import React from 'react';
+import {BaseComponent} from '../BaseComponent';
 
 import Item from './Item';
 import HoverButton from './HoverButton';
 import {find} from '../data';
 
-export default class Stage extends React.Component {
+export default class Stage extends BaseComponent {
 	static contextTypes = {
 		dispatch: React.PropTypes.func.isRequired,
 		types: React.PropTypes.object.isRequired,

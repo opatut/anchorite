@@ -1,8 +1,8 @@
 import React from 'react';
-
+import {BaseComponent} from '../BaseComponent';
 import * as items from '../resources/items';
 
-export default class Item extends React.Component {
+export default class Item extends BaseComponent {
 	render() {
 		const {
 			itemType,

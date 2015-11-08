@@ -1,12 +1,13 @@
 import React from 'react';
 import classnames from 'classnames';
 import ProgressIcon from './ProgressIcon';
+import {BaseComponent} from '../BaseComponent';
 
 import {find} from '../data';
 import * as unitTypes from '../resources/units';
 import collectIcon from '../resources/collect.png';
 
-class QueueItem extends React.Component {
+class QueueItem extends BaseComponent {
 	static contextTypes = {
 		types: React.PropTypes.object.isRequired,
 	}
@@ -35,7 +36,7 @@ class QueueItem extends React.Component {
 	}
 }
 
-export default class Queue extends React.Component {
+export default class Queue extends BaseComponent {
 	static contextTypes = {
 		dispatch: React.PropTypes.func.isRequired,
 	}

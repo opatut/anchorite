@@ -2,6 +2,7 @@ from anchorite import app, db, login_manager
 from flask import render_template, request, redirect, url_for, abort, jsonify
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from anchorite.common.models import User, ItemType, UserItem, Action, BrewAction, CollectAction, Recipe, RecipeItem, UnitType, UserUnit, GameState, AttackAction
+from random import randint
 
 @app.route('/')
 @login_required
@@ -67,11 +68,13 @@ def game_state():
 @app.route('/types')
 @login_required
 def types():
-    item_types = list(map(ItemType.to_json, ItemType.query.all()))
-    recipes = list(map(Recipe.to_json, Recipe.query.all()))
-    unit_types = list(map(UnitType.to_json, UnitType.query.all()))
-    friends = [friend.to_json() for friend in current_user.friends]
-    return jsonify(dict(item_types=item_types, recipes=recipes, unit_types=unit_types, friends=friends))
+    return jsonify(dict(
+        item_types = list(map(ItemType.to_json, ItemType.query.all())),
+        recipes = list(map(Recipe.to_json, Recipe.query.all())),
+        unit_types = list(map(UnitType.to_json, UnitType.query.all())),
+        friends = [friend.to_json() for friend in current_user.friends],
+        current_user = current_user.to_json()
+        ))
 
 @app.route('/action/brew', methods=['GET', 'POST'])
 @login_required
@@ -103,7 +106,7 @@ def action_attack():
 
     # get the models
     target_user = User.query.get_or_404(target_user_id)
-    units = [Unit.query.get_or_404(unit_id) for unit_id in unit_ids]
+    units = [UserUnit.query.get_or_404(unit_id) for unit_id in unit_ids]
 
     # really? attack yourself?
     if target_user_id == current_user.id:
@@ -119,7 +122,7 @@ def action_attack():
             abort(404)
 
     # duration depends on amount of units you send
-    duration = len(units)**0.6 * random.randint(30, 50)
+    duration = len(units)**0.6 * randint(30, 50)
 
     # make an action
     action = AttackAction()

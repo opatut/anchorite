@@ -1,17 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
+import {BaseComponent} from '../BaseComponent';
+import clock from '../clock';
 
-export default class ProgressIcon extends React.Component {
-	static contextTypes = {
-		tick: React.PropTypes.number.isRequired,
-	}
-
+@clock.listen
+export default class ProgressIcon extends BaseComponent {
 	render() {
-		const {children, start, end, duration, progress, round} = this.props;
+		const {children, start, end, duration, progress, round, tick} = this.props;
 
 		let alpha;
-
-		const {tick} = this.context;
 
 		if (progress !== undefined) {
 			alpha = progress;
