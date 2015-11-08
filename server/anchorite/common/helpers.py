@@ -9,19 +9,19 @@ USERS = [
 ]
 
 ITEMS = [
-    # icon               name
-    ("branch",           "Branch"),
-    ("grass",            "Clump of grass"),
-    ("frog_leg",         "Frog leg"),
-    ("pine_cone",        "Pine cone"),
-    ("rumex_alpinus",    "Rumex Alpinus"),
-    ("pigweed",          "Pigweed"),
-    ("yarrow",           "Yarrow"),
-    ("death_cap",        "Deathcap"),
-    ("sickener",         "Sickener"),
-    ("destroying_angel", "Destroying Angel"),
-    ("wild_strawberry",  "Wild Strawberry"),
-    ("star",             "Fallen Star"),
+    # icon               name               rarity
+    ("branch",           "Branch",          70),
+    ("grass",            "Clump of grass",  50),
+    ("frog_leg",         "Frog leg",        20),
+    ("pine_cone",        "Pine cone",       40),
+    ("rumex_alpinus",    "Rumex Alpinus",   25),
+    ("pigweed",          "Pigweed",         25),
+    ("yarrow",           "Yarrow",          25),
+    ("death_cap",        "Deathcap",        30),
+    ("sickener",         "Sickener",        50),
+    ("destroying_angel", "Destroying Angel",15),
+    ("wild_strawberry",  "Wild Strawberry", 20),
+    ("star",             "Fallen Star",     2),
 ]
 
 UNITS = [
@@ -63,10 +63,11 @@ def init(seed=False):
                 users[name].friends.append(users[friend])
 
         item_types = {}
-        for icon,name in ITEMS:
+        for icon,name,rarity in ITEMS:
             item_type = ItemType()
             item_type.name = name
             item_type.icon = icon
+            item_type.rarity = rarity
             db.session.add(item_type)
             item_types[icon] = item_type
 
