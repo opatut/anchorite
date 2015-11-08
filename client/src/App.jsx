@@ -19,6 +19,7 @@ export default class App extends React.Component {
 			inventory: new Inventory(),
 			tick: 0,
 			friendsOpen: false,
+			attacksOpen: false,
 		};
 	}
 
@@ -86,6 +87,8 @@ export default class App extends React.Component {
 			await this::this.toggleFriendsOverlay();
 		} else if (type === 'friends.add') {
 			await this::this.addFriend(action.username);
+		} else if (type === 'attacks.toggle') {
+			await this::this.toggleAttacksOverlay(action.targetUserId);
 		} else {
 			console.warn(`Unhandled action type: ${type}`);
 		}
@@ -167,18 +170,26 @@ export default class App extends React.Component {
 		this.setState({ friendsOpen: !this.state.friendsOpen });
 	}
 
+	toggleAttacksOverlay(targetUserId) {
+		this.setState({ attacksOpen: !this.state.attacksOpen, attackTargetUserId: targetUserId });
+	}
+
 	render() {
 		if (!this.types || !this.state.gameState) {
 			return <div>Loading...</div>;
 		}
 
-		const {stage, inventory, gameState, friendsOpen} = this.state;
+		const {stage, inventory, gameState, friendsOpen, attacksOpen, attackTargetUserId} = this.state;
 
 		return <div className="app">
 			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={gameState.actions} />
 
 			<Modal open={friendsOpen} onToggle={::this.toggleFriendsOverlay}>
 				<FriendsView />
+			</Modal>
+
+			<Modal open={attacksOpen} onToggle={::this.toggleAttacksOverlay}>
+				Attack stuff {attackTargetUserId}
 			</Modal>
 
 			<div className="account">

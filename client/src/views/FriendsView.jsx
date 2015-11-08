@@ -40,7 +40,7 @@ export default class FriendsView extends React.Component {
 						});
 						// open attack panel
 						dispatch({
-							type: 'attack.toggle',
+							type: 'attacks.toggle',
 							targetUserId: friend.id
 						});
 					}

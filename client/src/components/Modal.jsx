@@ -6,7 +6,7 @@ export default class Modal extends React.Component {
 		const {children, open, className, onToggle} = this.props;
 
 		return <div className={classnames('modal', {open}, className)}>
-			<div className="background" onClick={onToggle}></div>
+			<div className="background" onClick={() => onToggle()}></div>
 			<div className="content">
 				{children}
 			</div>
