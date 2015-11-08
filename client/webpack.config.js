@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var dev = process.env.NODE_ENV === 'development';
+
 module.exports = {
 	devtool: 'source-map',
 	entry: [
@@ -8,9 +10,9 @@ module.exports = {
 		'./src/index.jsx',
 	],
 	output: {
-		path: path.join(__dirname, 'dist'),
+		path: path.join(__dirname, '..', 'server', 'anchorite', 'static'),
 		filename: 'bundle.js',
-		publicPath: 'http://localhost:5001/static/',
+		publicPath: dev ? 'http://localhost:5001/static/' : '/static/',
 	},
 	module: {
 		loaders: [

@@ -84,7 +84,7 @@ class AttackAction(Action):
                     item = choice(items)
                     self.target_user.remove_item(item.item_type_id)
                     self.user.add_item(item.item_type_id)
-                    print('Stole 1 item: {}'.format(item.item_type.name))
+                    # print('Stole 1 item: {}'.format(item.item_type.name))
                 else:
                     print('No more items')
 
@@ -300,5 +300,6 @@ class UserUnit(db.Model):
         return dict(id=self.id,
             user_id=self.user_id,
             unit_type_id=self.unit_type_id,
+            attack_action_id=self.attack_action_id,
             happyness=self.happyness,
             health=self.health)

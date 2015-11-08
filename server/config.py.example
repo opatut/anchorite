@@ -7,4 +7,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECRET_KEY="innogamejam"
 
 DEBUG = True
-WEBPACK_SERVER = "http://localhost:5001/"
+
+#WEBPACK_SERVER = "http://localhost:5001/"
+WEBPACK_SERVER = False

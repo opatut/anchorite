@@ -4,3 +4,4 @@
 __pycache__
 .pyenv
 config.py
+server/anchorite/static/

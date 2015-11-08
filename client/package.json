@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "start": "node ./server.dev.js"
+    "start": "NODE_ENV=development node ./server.dev.js",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
