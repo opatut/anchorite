@@ -41,8 +41,8 @@ export default class BrewingView extends BaseComponent {
 			<Queue actions={actions} />
 
 			<div className="buttons">
-				<button className="button" onClick={() => dispatch({ type: 'friends.toggle' })}>Friends</button>
-				<button className="button" onClick={() => dispatch({ type: 'attacks.toggle' })}>Battlefield</button>
+				<button className="button" onClick={() => dispatch({ type: 'friends.toggle' })}>Neighbors</button>
+				<button className="button" onClick={() => dispatch({ type: 'attacks.toggle' })}>Fights</button>
 				<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
 			</div>
 		</div>;

@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ProgressIcon from './ProgressIcon';
 import {BaseComponent} from '../BaseComponent';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {find} from '../data';
 import * as unitTypes from '../resources/units';
@@ -46,13 +47,15 @@ export default class Queue extends BaseComponent {
 		const {types} = this.context;
 
 		return <div className='queue'>
-			{actions && actions.map((action) => {
-				return (
-					<ProgressIcon start={action.start} end={action.end} round key={action.id}>
-						<QueueItem action={action} />
-					</ProgressIcon>
-				);
-			})}
+			<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+				{actions && actions.map((action) => {
+					return (
+						<ProgressIcon start={action.start} end={action.end} round key={action.id}>
+							<QueueItem action={action} />
+						</ProgressIcon>
+					);
+				})}
+			</ReactCSSTransitionGroup>
 		</div>;
 	}
 }

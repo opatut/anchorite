@@ -24,10 +24,9 @@
     }
 
     .content {
-        background: url('../src/resources/button.png');
+        background: url('../src/resources/modal.png');
         background-size: 100% 100%;
 
-        padding: 4vw;
         z-index: 1;
 
         width: 60vw;
@@ -36,7 +35,15 @@
         transform: translateY(-100%);
         transition: transform 0.5s;
 
-        overflow: auto;
+        display: flex;
+        align-items: stretch;
+
+        > .scroll {
+            margin: 2.6666% 2%;
+            padding: 2vw;
+            overflow: auto;
+            flex-grow: 1;
+        }
     }
 
     &.open {

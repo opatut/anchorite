@@ -25,13 +25,17 @@ export default class ProgressIcon extends BaseComponent {
 
 		alpha = Math.min(1, Math.max(0, alpha));
 
+		alpha = 1 - alpha;
+
 		const className = classnames('progress-icon', {round});
 
-		const y = Math.sin(alpha*Math.PI*2 - Math.PI/2)*200 + 100;
-		const x = Math.cos(alpha*Math.PI*2 - Math.PI/2)*200 + 100;
+		const y = Math.sin(- alpha*Math.PI*2 - Math.PI/2)*100 + 100;
+		const x = Math.cos(- alpha*Math.PI*2 - Math.PI/2)*100 + 100;
 		const large = alpha > 0.5;
 
-		const svg = `<path d="M100,100 L100,-100 A200,200 0 ${large?1:0},1 ${x},${y} z" />`;
+		const svg = alpha >= 1
+			? `<circle cx="100" cy="100" r="100" />`
+			: `<path d="M100,100 L100,0 A100,100 0 ${large?1:0},0 ${x},${y} z" />`;
 
 		return <div className={className}>
 			{children}
