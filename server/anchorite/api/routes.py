@@ -122,7 +122,7 @@ def action_attack():
             abort(404)
 
     # duration depends on amount of units you send
-    duration = len(units)**0.6 * randint(30, 50)
+    duration = len(units)**0.6 * randint(30, 50) * 0.05
 
     # make an action
     action = AttackAction()

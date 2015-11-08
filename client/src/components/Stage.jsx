@@ -37,8 +37,8 @@ export default class Stage extends BaseComponent {
 			</div>
 			{items && items.toArray().length > 0 && (
 				<div className="stage-buttons">
-					<button className="button" onClick={() => dispatch({ type: 'stage.clear' })}>Put back</button>
-					<button className="button" onClick={() => dispatch({ type: 'stage.confirm' })}>Brew</button>
+					<button className="button red" onClick={() => dispatch({ type: 'stage.clear' })}>Put back</button>
+					<button className="button green" onClick={() => dispatch({ type: 'stage.confirm' })}>Brew</button>
 				</div>
 			)}
 		</div>;

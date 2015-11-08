@@ -14,14 +14,6 @@
     .stage-buttons {
         .button {
             margin: 1vw;
-
-            &:nth-child(1) {
-                -webkit-filter: sepia(100%) hue-rotate(-30deg) saturate(1.5);
-            }
-
-            &:nth-child(2) {
-                -webkit-filter: sepia(100%) hue-rotate(70deg) saturate(1.5);
-            }
         }
     }
 }

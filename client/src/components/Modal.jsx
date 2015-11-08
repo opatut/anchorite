@@ -9,7 +9,9 @@ export default class Modal extends BaseComponent {
 		return <div className={classnames('modal', {open}, className)}>
 			<div className="background" onClick={() => onToggle()}></div>
 			<div className="content">
-				{children}
+				<div className="scroll">
+					{children}
+				</div>
 			</div>
 		</div>;
 	}

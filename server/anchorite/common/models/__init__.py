@@ -1,9 +1,8 @@
-import random
 from anchorite import db
 from flask.ext.login import UserMixin, current_user
 from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
 import math
-from random import shuffle
+from random import shuffle, random, randint, choice
 
 friends = db.Table('friends', db.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -74,10 +73,6 @@ class CollectAction(Action):
             else:
                 n -= item.rarity
 
-        #for i in range(random.randint(0, 10)):
-        #    self.user.add_item(random.choice(items).id)
-
-
 class AttackAction(Action):
     id = db.Column(db.Integer, db.ForeignKey('action.id'), primary_key=True)
     target_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -89,17 +84,33 @@ class AttackAction(Action):
 
     def execute(self):
         def win():
-            pass
+            print('Attacker wins', len(units))
+            # steal stuff, for every unit alive
+            for unit in units:
+                items = self.target_user.items.all()
+                if items:
+                    item = choice(items)
+                    self.target_user.remove_item(item.item_type_id)
+                    self.user.add_item(item.item_type_id)
+                    print('Stole 1 item: {}'.format(item.item_type.name))
+                else:
+                    print('No more items')
+
 
         def lose():
-            pass
+            print('Defender wins, no gains')
 
         # get units
-        enemies = shuffle(target_user.units.filter_by(attack_action=None).all())
-        units = shuffle(self.units.all())
+        enemies = self.target_user.units.filter_by(attack_action=None).all()
+        units = self.units.all()
+        shuffle(enemies)
+        shuffle(units)
 
         # roll for luck
-        luck = Math.random()
+        luck = random()
+
+        print('Fighting: {attack} with {units} units (attack) vs. {defense} with {enemies} units (defense)'.format(
+            attack=self.user.name, defense=self.target_user.name, units=len(units), enemies=len(enemies)))
 
         if not enemies:
             win()
@@ -107,9 +118,9 @@ class AttackAction(Action):
             # take only half of the enemy units, but at least one
             enemies = enemies[:max(1, math.ceil(len(enemies) / 2.0))]
 
-            while units or enemies:
-                i1 = randint(0, len(units))
-                i2 = randint(0, len(enemies))
+            while units and enemies:
+                i1 = randint(0, len(units) - 1)
+                i2 = randint(0, len(enemies) - 1)
                 u = units[i1]
                 e = enemies[i2]
 
@@ -117,7 +128,20 @@ class AttackAction(Action):
                 u_strength = 1
                 e_strength = 2
 
-                ratio = u_strength/e_strength
+                ratio = u_strength / (e_strength + u_strength)
+
+                if random() < ratio:
+                    # unit wins
+                    db.session.delete(e)
+                    print('Defender loses unit', e)
+                    del enemies[i2]
+                else:
+                    db.session.delete(u)
+                    print('Attacker loses unit', u)
+                    del units[i1]
+
+            if units: win()
+            if enemies: lose()
 
         # "return" units home
         self.units = []

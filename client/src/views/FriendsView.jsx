@@ -48,14 +48,14 @@ export default class FriendsView extends BaseComponent {
 
 					return 	<li key={friend.id}>
 						{friend.name}
-						<button className="button" onClick={onClick}>Attack!</button>
+						<button className="button red" onClick={onClick}>Attack!</button>
 					</li>;
 				})}
 			</ul>
 
 			<form className="friend-form">
 				<input type="text" placeholder="Enter username" ref="username" />
-				<button className="button" onClick={this::addFriend}>Add friend</button>
+				<button className="button green" onClick={this::addFriend}>Add neighbor</button>
 			</form>
 		</div>;
 	}

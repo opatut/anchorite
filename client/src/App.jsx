@@ -8,7 +8,7 @@ import {find} from 'lodash';
 import {BaseComponent} from './BaseComponent';
 import clock from './clock';
 
-const TICK_INTERVAL = 1;
+const TICK_INTERVAL = 0.05;
 const POLL_INTERVAL = 10;
 
 export default class App extends BaseComponent {

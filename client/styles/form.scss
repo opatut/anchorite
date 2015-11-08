@@ -77,4 +77,27 @@ form {
     &:active {
         -webkit-filter: brightness(1.2);
     }
+
+    &.red {
+        -webkit-filter: sepia(100%) hue-rotate(-30deg) saturate(1.5);
+        &:hover {
+            -webkit-filter: brightness(1.1) sepia(100%) hue-rotate(-30deg) saturate(1.5);
+        }
+
+        &:active {
+            -webkit-filter: brightness(1.2) sepia(100%) hue-rotate(-30deg) saturate(1.5);
+        }
+    }
+
+    &.green {
+        -webkit-filter: sepia(100%) hue-rotate(70deg) saturate(1.5);
+
+        &:hover {
+            -webkit-filter: brightness(1.1) sepia(100%) hue-rotate(70deg) saturate(1.5);
+        }
+
+        &:active {
+            -webkit-filter: brightness(1.2) sepia(100%) hue-rotate(70deg) saturate(1.5);
+        }
+    }
 }
