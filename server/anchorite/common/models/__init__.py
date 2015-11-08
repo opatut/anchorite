@@ -9,6 +9,13 @@ friends = db.Table('friends', db.metadata,
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id'))
 )
 
+class AttackChance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    unit_a= db.Column(db.String(80))
+    unit_b = db.Column(db.String(80))
+    a_chance = db.Column(db.Integer)
+    b_chance = db.Column(db.Integer)
+
 class Action(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(80))
@@ -124,9 +131,15 @@ class AttackAction(Action):
                 u = units[i1]
                 e = enemies[i2]
 
+                chance = AttackChance.query.filter_by(unit_a=u.image, unit_b=e.image).first()
+
+
                 # Now fight!
-                u_strength = 1
-                e_strength = 2
+                u_strength = chance.a_chance
+                e_strength = chance.b_chance
+
+                print(u_strength)
+                print(e_strength)
 
                 ratio = u_strength / (e_strength + u_strength)
 
@@ -196,6 +209,8 @@ class UnitType(db.Model):
     user_units = db.relationship("UserUnit", backref="unit_type", lazy="dynamic")
     name = db.Column(db.String(80))
     image = db.Column(db.String(80))
+    attack = db.Column(db.Integer)
+    defence = db.Column(db.Integer)
 
     def to_json(self):
         return dict(id=self.id, name=self.name, image=self.image)
