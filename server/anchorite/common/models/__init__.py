@@ -12,10 +12,15 @@ friends = db.Table('friends', db.metadata,
 
 class AttackChance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    unit_a= db.Column(db.String(80))
-    unit_b = db.Column(db.String(80))
+    type_a_id = db.Column(db.Integer, db.ForeignKey('unit_type.id'))
+    type_b_id = db.Column(db.Integer, db.ForeignKey('unit_type.id'))
     a_chance = db.Column(db.Integer)
     b_chance = db.Column(db.Integer)
+
+    @classmethod
+    def find(cls, type_a, type_b):
+        return cls.query.filter_by(type_a_id=type_a.id, type_b_id=type_b.id).first()
+
 
 class Action(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -141,17 +146,22 @@ class AttackAction(Action):
                 u = units[i1]
                 e = enemies[i2]
 
-                chance = AttackChance.query.filter_by(unit_a=u.image, unit_b=e.image).first()
+                chance1 = AttackChance.find(u.unit_type, e.unit_type)
+                chance2 = AttackChance.find(e.unit_type, u.unit_type)
 
+                u_strength = 1
+                e_strength = 1.4
 
-                # Now fight!
-                u_strength = chance.a_chance
-                e_strength = chance.b_chance
-
-                print(u_strength)
-                print(e_strength)
+                if chance1:
+                    u_strength *= chance1.a_chance
+                    e_strength *= chance1.b_chance
+                elif chance2:
+                    e_strength *= chance2.a_chance
+                    u_strength *= chance2.b_chance
 
                 ratio = u_strength / (e_strength + u_strength)
+
+                print('Fight', u.unit_type.name, e.unit_type.name, u_strength, e_strength, ratio)
 
                 if random() < ratio:
                     # unit wins
@@ -258,15 +268,13 @@ class User(db.Model, UserMixin):
         if item:
             item.count += count
         else:
-            self.items.append(UserItem(item_type_id=item_type_id))
-        db.session.commit()
+            self.items.append(UserItem(item_type_id=item_type_id, count=count))
 
     def remove_item(self, item_type_id, count=1):
         item_remove = self.items.filter(UserItem.item_type_id == item_type_id).first()
         item_remove.count -= 1
         if item_remove.count <= 0:
             db.session.delete(item_remove)
-            db.session.commit()
 
     def queue_action(self, action, duration):
         current_tick = GameState.query.get(0).tick
@@ -329,7 +337,6 @@ class UserUnit(db.Model):
 
     def kill(self):
         db.session.delete(self)
-        db.session.commit()
 
     def apply_damage(self, damage):
         self.health -= damage

@@ -40,29 +40,18 @@ ATTACK_CHANCES = [
     ("purple_monster", "brown_monster", 80, 20),
     ("gold_monster", "brown_monster", 90, 10),
 
-    ("brown_monster", "red_monster", 40, 60),
     ("red_monster", "red_monster", 50, 50),
     ("blue_monster", "red_monster", 80, 20),
     ("purple_monster", "red_monster", 60, 40),
     ("gold_monster", "red_monster", 60, 40),
 
-    ("brown_monster", "blue_monster", 30, 70),
-    ("red_monster", "blue_monster", 20, 80),
     ("blue_monster", "blue_monster", 50, 50),
     ("purple_monster", "blue_monster", 30, 70),
     ("gold_monster", "blue_monster", 80, 20),
 
-    #TODO
-    ("brown_monster", "purple_monster", 30, 70),
-    ("red_monster", "purple_monster", 20, 80),
-    ("blue_monster", "purple_monster", 50, 50),
     ("purple_monster", "purple_monster", 30, 70),
     ("gold_monster", "purple_monster", 80, 20),
 
-    ("brown_monster", "gold_monster", 30, 70),
-    ("red_monster", "gold_monster", 20, 80),
-    ("blue_monster", "gold_monster", 50, 50),
-    ("purple_monster", "gold_monster", 30, 70),
     ("gold_monster", "gold_monster", 80, 20)
 ]
 
@@ -101,14 +90,6 @@ def init(seed=False):
         db.session.add(unit_type)
         unit_types[image] = unit_type
 
-    for attacking_unit, defending_unit, attack_chance, defese_chance in ATTACK_CHANCES:
-        db.session.add(AttackChance(
-            unit_a=attacking_unit,
-            unit_b=defending_unit,
-            a_chance=attack_chance,
-            b_chance=defese_chance
-        ))
-
     for name, outcome, items, duration in RECIPES:
         recipe = Recipe()
         recipe.name = name
@@ -122,6 +103,18 @@ def init(seed=False):
             recipe_item.item_type = item_types[item]
             db.session.add(recipe_item)
 
+    db.session.commit()
+
+    for attacking_unit, defending_unit, attack_chance, defese_chance in ATTACK_CHANCES:
+        db.session.add(AttackChance(
+            type_a_id=unit_types[attacking_unit].id,
+            type_b_id=unit_types[defending_unit].id,
+            a_chance=attack_chance,
+            b_chance=defese_chance
+        ))
+
+    db.session.commit()
+
     if seed:
         users = {}
         for name, password, _ in USERS:
@@ -129,9 +122,19 @@ def init(seed=False):
             users[name] = user
             db.session.add(user)
 
+        db.session.commit()
+
         for name, _, friends in USERS:
             for friend in friends:
                 users[name].friends.append(users[friend])
 
+        db.session.commit()
 
-    db.session.commit()
+        for user in users.values():
+            for item_type in item_types.values():
+                user.add_item(item_type.id, 20)
+
+            for unit_type in unit_types.values():
+                db.session.add(UserUnit(unit_type=unit_type, user_id=user.id))
+
+        db.session.commit()

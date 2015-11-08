@@ -25,8 +25,6 @@ export default class Chat extends BaseComponent {
 
 		let {clientHeight, scrollHeight, scrollTop} = container;
 
-		console.log({clientHeight, scrollHeight, scrollTop});
-
 		const THRESHOLD = 10;
 		if (scrollTop >= scrollHeight - clientHeight - THRESHOLD) {
 			setTimeout(() => {
