@@ -119,3 +119,18 @@ body {
     width: 0;
     transition: transform 300ms, width 300ms;
 }
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(255,255,255,0.6);
+}

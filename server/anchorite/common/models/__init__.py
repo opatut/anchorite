@@ -1,4 +1,5 @@
 from anchorite import db
+from datetime import datetime
 from flask.ext.login import UserMixin, current_user
 from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
 import math
@@ -54,7 +55,9 @@ class BrewAction(Action):
         return d
 
     def execute(self):
-        unit = UserUnit(unit_type=self.recipe.unit_type)
+        unit_type = self.recipe.unit_type
+        unit = UserUnit(unit_type=unit_type)
+        self.user.write_message('You brew a {}'.format(unit_type.name))
         self.user.units.append(unit)
 
     def __repr__(self):
@@ -75,7 +78,7 @@ class CollectAction(Action):
         for item in items:
             if item.rarity > n:
                 self.user.add_item(item.id)
-                print("Item Dropped: {}".format(item.name))
+                self.user.write_message('You found a {}'.format(item.name))
                 break
             else:
                 n -= item.rarity
@@ -90,34 +93,41 @@ class AttackAction(Action):
     }
 
     def execute(self):
+        attacker = self.user
+        defender = self.target_user
+
+        e_losses = 0
+        u_losses = 0
+
         def win():
-            print('Attacker wins', len(units))
+            items_stolen = {}
+
             # steal stuff, for every unit alive
             for unit in units:
-                items = self.target_user.items.all()
+                items = defender.items.all()
                 if items:
                     item = choice(items)
-                    self.target_user.remove_item(item.item_type_id)
-                    self.user.add_item(item.item_type_id)
-                    # print('Stole 1 item: {}'.format(item.item_type.name))
-                else:
-                    print('No more items')
+                    items_stolen[item.item_type.name] = items_stolen.get(item.item_type.name, 0) + 1
+                    attacker.add_item(item.item_type_id)
+                    defender.remove_item(item.item_type_id)
 
+            print(items_stolen)
+            loot = ', '.join(['{} {}'.format(count, name) for name, count in items_stolen.items()]) or 'nothing'
+            attacker.write_message('VICTORY! You win against {}. Your units bring back loot: {}.'.format(defender.name, loot))
+            defender.write_message('THIEFS! You were raided by {}. They took from you: {}.'.format(attacker.name, loot))
 
         def lose():
-            print('Defender wins, no gains')
+            attacker.write_message('DEFEAT! You lost all {} units in your attack against {}.'.format(u_losses, defender.name))
+            defender.write_message('DEFENSE! You defended against {} units from {}, losing {} units on your own.'.format(u_losses, attacker.name, e_losses))
 
         # get units
-        enemies = self.target_user.units.filter_by(attack_action=None).all()
+        enemies = defender.units.filter_by(attack_action=None).all()
         units = self.units.all()
         shuffle(enemies)
         shuffle(units)
 
         # roll for luck
         luck = random()
-
-        print('Fighting: {attack} with {units} units (attack) vs. {defense} with {enemies} units (defense)'.format(
-            attack=self.user.name, defense=self.target_user.name, units=len(units), enemies=len(enemies)))
 
         if not enemies:
             win()
@@ -146,11 +156,11 @@ class AttackAction(Action):
                 if random() < ratio:
                     # unit wins
                     db.session.delete(e)
-                    print('Defender loses unit', e)
+                    e_losses += 1
                     del enemies[i2]
                 else:
                     db.session.delete(u)
-                    print('Attacker loses unit', u)
+                    u_losses += 1
                     del units[i1]
 
             if units: win()
@@ -229,6 +239,7 @@ class User(db.Model, UserMixin):
     items = db.relationship("UserItem", backref="user", lazy="dynamic")
     units = db.relationship("UserUnit", backref="user", lazy="dynamic")
     incoming_attacks = db.relationship("AttackAction", backref="target_user", lazy="dynamic", foreign_keys=[AttackAction.target_user_id])
+    messages = db.relationship("Message", backref="user", lazy="dynamic")
 
     friends = db.relationship("User",
         backref="friended",
@@ -274,6 +285,11 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(password, self.password_hash, self.salt)
+
+    def write_message(self, text):
+        message = Message(text=text, user_id=self.id, date=datetime.utcnow())
+        db.session.add(message)
+        return message
 
     def to_json(self):
         return dict(id=self.id, name=self.name)
@@ -327,3 +343,13 @@ class UserUnit(db.Model):
             attack_action_id=self.attack_action_id,
             happyness=self.happyness,
             health=self.health)
+
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = db.Column(db.Text)
+
+    def to_json(self):
+        return dict(id=self.id, date=str(self.date), text=self.text)
