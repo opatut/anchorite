@@ -70,7 +70,7 @@ def types():
         item_types = list(map(ItemType.to_json, ItemType.query.all())),
         recipes = list(map(Recipe.to_json, Recipe.query.all())),
         unit_types = list(map(UnitType.to_json, UnitType.query.all())),
-        friends = [friend.to_json() for friend in current_user.friends],
+        friends = [friend.to_json() for friend in current_user.friends.all()],
         current_user = current_user.to_json()
         ))
 
@@ -143,9 +143,9 @@ def add_friend():
         abort(404)
 
     if user in current_user.friends:
-        return jsonify(ok=True)
+        return jsonify(ok=True, message='You are already friends.')
 
     current_user.friends.append(user)
     db.session.commit()
-    return jsonify(ok=True)
+    return jsonify(ok=True, message='Friend added.')
 
