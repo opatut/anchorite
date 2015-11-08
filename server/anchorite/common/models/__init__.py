@@ -62,8 +62,16 @@ class CollectAction(Action):
 
     def execute(self):
         items = ItemType.query.all()
-        for i in range(randint(0, 10)):
-            self.user.add_item(choice(items).id)
+        chance_sum = sum([ item.rarity for item in items ])
+
+        n = random.random() * chance_sum
+        for item in items:
+            if item.rarity > n:
+                self.user.add_item(item.id)
+                print("Item Dropped: {}".format(item.name))
+                break
+            else:
+                n -= item.rarity
 
 class AttackAction(Action):
     id = db.Column(db.Integer, db.ForeignKey('action.id'), primary_key=True)
@@ -260,6 +268,7 @@ class ItemType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     icon = db.Column(db.String(80))
+    rarity = db.Column(db.Integer)
     user_items = db.relationship("UserItem", backref="item_type", lazy="dynamic")
     recipe_items = db.relationship("RecipeItem", backref="item_type", lazy="dynamic")
 
