@@ -100,24 +100,20 @@ body {
 
 .example-enter {
     transform: scale(0);
-    width: 0;
 }
 
 .example-enter.example-enter-active {
     transform: none;
-    width: 6vw;
-    transition: transform 300ms, width 300ms;
+    transition: transform 300ms;
 }
 
 .example-leave {
     transform: none;
-    width: 6vw;
 }
 
 .example-leave.example-leave-active {
     transform: scale(0);
-    width: 0;
-    transition: transform 300ms, width 300ms;
+    transition: transform 300ms;
 }
 
 

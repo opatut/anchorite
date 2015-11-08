@@ -7,7 +7,7 @@ export default class Sprite extends BaseComponent {
 		sprite: React.PropTypes.string.isRequired,
 		width: React.PropTypes.number.isRequired,
 		height: React.PropTypes.number.isRequired,
-		frames: React.PropTypes.arrayOf(React.PropTypes.number).isRequired,
+		frames: React.PropTypes.arrayOf(React.PropTypes.number),
 		count: React.PropTypes.number,
 		framerate: React.PropTypes.number,
 
@@ -55,10 +55,15 @@ export default class Sprite extends BaseComponent {
 	render() {
 		const {width, height, sprite, frames, className, displayUnit, displayWidth: _1, displayHeight: _2, ...props} = this.props;
 		let {displayWidth, displayHeight} = this.props;
+
+		if (!this.props.count && !frames) {
+			console.warn('Need either count for frames[] for <Sprite/>.');
+			return <script />;
+		}
 		const count = this.props.count || frames.length;
 
 		const {frame} = this.state;
-		const currentFrame = frames[frame % frames.length];
+		const currentFrame = frames ? frames[frame % frames.length] : (frame % frames.length);
 
 		const ratio = width/height;
 

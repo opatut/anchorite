@@ -1,6 +1,16 @@
 .queue {
-    > * > * {
-        margin: 0.5vw;
+    margin: 0.5vw;
+
+    > * {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap-reverse;
+
+        > * {
+            margin: 0.2vw;
+        }
     }
 }
 

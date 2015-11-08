@@ -25,6 +25,8 @@ export default class BrewingView extends BaseComponent {
 		const inventoryLeft = new Inventory(arr.slice(0, 12));
 		const inventoryRight = new Inventory(arr.slice(12));
 
+		const brewing = actions.length ? actions[0].type === 'brew_action' : false;
+
 		return <div className="brewing-view">
 			<div className="units">
 				{ units && units.map((unit) => <Unit {...unit} height={12} key={unit.id} />) }
@@ -36,16 +38,21 @@ export default class BrewingView extends BaseComponent {
 			<Shelf inventory={inventoryRight} className="right" />
 
 			<div className="center">
-				<Cauldron />
+				<Cauldron {...{brewing}} />
 			</div>
 
-			<Queue actions={actions} />
-
 			<div className="bottom">
-				<Chat messages={messages} />
-				<button className="button" onClick={() => dispatch({ type: 'friends.toggle' })}>Neighbors</button>
-				<button className="button" onClick={() => dispatch({ type: 'attacks.toggle' })}>Fights</button>
-				<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
+				<div className="left">
+					<Chat messages={messages} />
+				</div>
+				<div className="right">
+					<Queue actions={actions} />
+					<div className="actions">
+						<button className="button" onClick={() => dispatch({ type: 'friends.toggle' })}>Neighbors</button>
+						<button className="button" onClick={() => dispatch({ type: 'attacks.toggle' })}>Fights</button>
+						<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>
+					</div>
+				</div>
 			</div>
 		</div>;
 	}

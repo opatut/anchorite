@@ -5,3 +5,6 @@ export grass from './grass.png';
 export wild_strawberry from './wild_strawberry.png';
 export destroying_angel from './destroying_angel.png';
 export rumex_alpinus from './rumex_alpinus.png';
+export death_cap from './death_cap.png';
+export frog_leg from './frog_leg.png';
+export star from './star.png';

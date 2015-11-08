@@ -49,13 +49,6 @@
         justify-content: center;
     }
 
-    > .queue {
-        position: absolute;
-        left: 50%;
-        bottom: 20%;
-        transform: translate(-50%, 0%);
-    }
-
     > .bottom {
         position: absolute;
         left: 0;
@@ -66,18 +59,35 @@
 
         display: flex;
         align-items: flex-end;
-        pointer-events: none;
 
-        > .chat {
+        > * {
+            flex: 1 1 0;
+        }
+
+        .actions {
+            margin-top: 0.5vw;
+            margin-right: -0.5vw;
+            display: flex;
+            justify-content: flex-end;
+
+            > * {
+                margin-right: 0.5vw;
+            }
+        }
+
+        .chat {
             text-align: left;
             font-size: 0.6em;
-            flex-grow: 1;
+            flex: 1 1 0;
             opacity: 0.5;
             max-height: 20vh;
             overflow: auto;
+            border-radius: 12px;
+            padding: 2vw;
 
             &:hover {
                 opacity: 1;
+                background: rgba(0, 0, 0, 0.6);
             }
 
             .date {
@@ -85,11 +95,6 @@
                 font-size: 0.9em;
                 color: #8F8;
             }
-        }
-
-        > * {
-            pointer-events: all;
-            margin: 1vw;
         }
     }
 
