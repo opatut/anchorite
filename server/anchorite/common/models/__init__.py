@@ -132,7 +132,7 @@ class UnitType(db.Model):
 
 class GameState(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tick = db.Column(db.Integer)
+    tick = db.Column(db.Float)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
