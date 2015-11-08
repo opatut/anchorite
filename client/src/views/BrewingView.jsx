@@ -1,7 +1,7 @@
 import React from 'react';
 import {BaseComponent} from '../BaseComponent';
 
-import {Unit, Queue, Sprite, Cauldron, Shelf, Stage} from '../components';
+import {Chat, Unit, Queue, Sprite, Cauldron, Shelf, Stage} from '../components';
 import {Inventory, find} from '../data';
 
 export default class BrewingView extends BaseComponent {
@@ -18,6 +18,7 @@ export default class BrewingView extends BaseComponent {
 			inventory,
 			units,
 			actions,
+			messages,
 		} = this.props;
 
 		const arr = inventory.toArray();
@@ -40,7 +41,8 @@ export default class BrewingView extends BaseComponent {
 
 			<Queue actions={actions} />
 
-			<div className="buttons">
+			<div className="bottom">
+				<Chat messages={messages} />
 				<button className="button" onClick={() => dispatch({ type: 'friends.toggle' })}>Neighbors</button>
 				<button className="button" onClick={() => dispatch({ type: 'attacks.toggle' })}>Fights</button>
 				<button className="button" onClick={() => dispatch({ type: 'collect' })}>Collect herbs</button>

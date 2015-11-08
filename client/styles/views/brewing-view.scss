@@ -12,6 +12,7 @@
 
     > .shelf {
         position: absolute;
+        z-index: 2;
 
         &.left {
             left: 20%;
@@ -55,7 +56,7 @@
         transform: translate(-50%, 0%);
     }
 
-    > .buttons {
+    > .bottom {
         position: absolute;
         left: 0;
         right: 0;
@@ -63,7 +64,31 @@
         margin: 1vw;
         text-align: center;
 
+        display: flex;
+        align-items: flex-end;
+        pointer-events: none;
+
+        > .chat {
+            text-align: left;
+            font-size: 0.6em;
+            flex-grow: 1;
+            opacity: 0.5;
+            max-height: 20vh;
+            overflow: auto;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            .date {
+                display: block;
+                font-size: 0.9em;
+                color: #8F8;
+            }
+        }
+
         > * {
+            pointer-events: all;
             margin: 1vw;
         }
     }

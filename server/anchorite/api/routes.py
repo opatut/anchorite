@@ -54,16 +54,14 @@ def logout():
 @app.route('/game_state')
 @login_required
 def game_state():
-    state = {
-        "name": current_user.name,
-        "tick": GameState.query.get(0).tick,
-        "inventory": list(map(UserItem.to_json, current_user.items)),
-        "units": list(map(UserUnit.to_json, current_user.units)),
-        "actions": [action.to_json() for action in current_user.actions],
-        "incoming_attacks": [attack.to_json() for attack in current_user.incoming_attacks]
-    }
-
-    return jsonify(state)
+    return jsonify(
+        tick             = GameState.query.get(0).tick,
+        inventory        = [user_item.to_json() for user_item in current_user.items],
+        units            = [user_unit.to_json() for user_unit in current_user.units],
+        actions          = [action.to_json() for action in current_user.actions],
+        incoming_attacks = [attack.to_json() for attack in current_user.incoming_attacks],
+        messages         = [message.to_json() for message in current_user.messages],
+    )
 
 @app.route('/types')
 @login_required

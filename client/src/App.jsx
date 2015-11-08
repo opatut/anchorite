@@ -192,7 +192,7 @@ export default class App extends BaseComponent {
 		const normalActions = gameState.actions.filter((a) => a.type !== 'attack_action');
 
 		return <div className="app">
-			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={normalActions} />
+			<BrewingView stage={stage} inventory={inventory} units={gameState.units} actions={normalActions} messages={gameState.messages} />
 
 			<Modal open={friendsOpen} onToggle={::this.toggleFriendsOverlay}>
 				<FriendsView />

@@ -1,4 +1,5 @@
 export Cauldron from './Cauldron';
+export Chat from './Chat';
 export HoverButton from './HoverButton';
 export Item from './Item';
 export ProgressIcon from './ProgressIcon';

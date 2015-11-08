@@ -11,9 +11,9 @@ USERS = [
 ITEMS = [
     # icon               name               rarity
     ("branch",           "Branch",          70),
-    ("grass",            "Clump of grass",  50),
-    ("frog_leg",         "Frog leg",        20),
-    ("pine_cone",        "Pine cone",       40),
+    ("grass",            "Clump of Grass",  50),
+    ("frog_leg",         "Frog Leg",        20),
+    ("pine_cone",        "Pine Cone",       40),
     ("rumex_alpinus",    "Rumex Alpinus",   25),
     ("pigweed",          "Pigweed",         25),
     ("yarrow",           "Yarrow",          25),
