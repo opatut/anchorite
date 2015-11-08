@@ -60,13 +60,6 @@ def init(seed=False):
         db.session.add(item_type)
         item_types[icon] = item_type
 
-    user_item_paul = UserItem()
-    user_item_paul.user = user
-    user_item_paul.item_type = item_types["branch"]
-    user_item_paul.count = 10
-    db.session.add(user_item_paul)
-
-
     unit_types = {}
     for image,name in UNITS:
         unit_type = UnitType()
