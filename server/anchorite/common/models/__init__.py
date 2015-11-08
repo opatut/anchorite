@@ -13,8 +13,8 @@ class Action(db.Model):
     type = db.Column(db.String(80))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    start = db.Column(db.Integer, default=0)
-    end = db.Column(db.Integer, default=0)
+    start = db.Column(db.Float, default=0)
+    end = db.Column(db.Float, default=0)
 
     __mapper_args__ = {
         "polymorphic_identity": "action",
