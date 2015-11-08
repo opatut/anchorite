@@ -8,3 +8,5 @@ export rumex_alpinus from './rumex_alpinus.png';
 export death_cap from './death_cap.png';
 export frog_leg from './frog_leg.png';
 export star from './star.png';
+export pigweed from './pigweed.png';
+export yarrow from './yarrow.png';
