@@ -64,7 +64,7 @@ class CollectAction(Action):
         items = ItemType.query.all()
         chance_sum = sum([ item.rarity for item in items ])
 
-        n = random.random() * chance_sum
+        n = random() * chance_sum
         for item in items:
             if item.rarity > n:
                 self.user.add_item(item.id)
